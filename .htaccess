@@ -1,0 +1,34 @@
+# Permite reescribir las peticiones de URL
+RewriteEngine On
+
+# Si el archivo y la carpeta no existen hacer siguiente reescritura
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+
+# Redirecciona todas las peticiones a index
+RewriteRule ^ index.php [QSA,L]
+
+# Bloquea el acceso directo al archivo autoload.php
+<Files autoload.php>
+	Order allow,deny
+	Deny from all
+</Files>
+
+# Bloquea el acceso directo al archivo composer.json
+<Files composer.json>
+	Order allow,deny
+	Deny from all
+</Files>
+
+# Bloquea el acceso directo al archivo composer.lock
+<Files composer.lock>
+	Order allow,deny
+	Deny from all
+</Files>
+
+# Bloquea el acceso directo al archivo .gitignore
+<Files .gitignore>
+	Order allow,deny
+	Deny from all
+</Files>
