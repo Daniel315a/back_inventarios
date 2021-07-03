@@ -14,3 +14,10 @@ VALUES
     '05b752f8270b4de3a5de314fe6ba0663',
     (SELECT id FROM empresas WHERE nombre = 'Decora y transforma')
 );
+
+INSERT INTO tipos_persona (nombre, es_empleado)
+VALUES
+('Cliente', false),
+('Vendedor', true),
+('Instalador', true),
+('Distribuidor', false);

@@ -1,3 +1,8 @@
+DELETE FROM acciones WHERE id > 0;
+DELETE FROM permisos_x_tipos_usuario WHERE permiso > 0;
+DELETE FROM permisos WHERE id > 0;
+DELETE FROM elementos WHERE id > 0;
+
 INSERT INTO elementos (controlador)
 VALUES
 (
@@ -5,6 +10,9 @@ VALUES
 ),
 (
     'Municipio'
+),
+(
+    'TipoPersona'
 );
 
 INSERT INTO permisos(elemento, nombre)
@@ -16,6 +24,10 @@ VALUES
 (
     (SELECT id FROM elementos WHERE controlador = 'Municipio'),
     'Consulta de municipios'
+),
+(
+    (SELECT id FROM elementos WHERE controlador = 'TipoPersona'),
+    'Consultar tipos de persona'
 );
 
 INSERT INTO acciones(nombre, valor, permiso)
@@ -59,6 +71,26 @@ VALUES
     'DELETE',
     false,
     (SELECT id FROM permisos WHERE nombre = 'Consulta de municipios')
+),
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona')
+),
+(
+    'POST',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona')
+),
+(
+    'PUT',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona')
+),
+(
+    'DELETE',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona')
 );
 
 INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
@@ -69,5 +101,9 @@ VALUES
 ),
 (
     (SELECT id FROM permisos WHERE nombre = 'Consulta de municipios'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+),
+(
+    (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
