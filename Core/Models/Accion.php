@@ -3,9 +3,9 @@
     class Accion
     {
 
-        public $id;
-        public $valor;
+        private $id;
         public $nombre;
+        public $valor;
 
         function __construct()
         {

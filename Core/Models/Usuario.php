@@ -44,8 +44,10 @@
 
                 $this->id = $datos[0]->id;
                 $this->nombre = $datos[0]->nombre;
-                $this->permisos = isset($permiso->consultarPermisosUsuario($this->id)->datos) ? $permiso->consultarPermisosUsuario($this->id)->datos : array();
                 $this->empresa = new Empresa($datos[0]->empresa);
+
+                $permisos = $permiso->consultarPermisosTipoUsuario($datos[0]->tipo_usuario)->datos;
+                $this->permisos = isset($permisos) ? $permisos : array();
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
@@ -73,8 +75,10 @@
                 $this->nombre = $datos[0]->nombre;
                 $this->contrasenna = $datos[0]->contrasenna;
                 $this->token = $datos[0]->token;
-                $this->permisos = isset($permiso->consultarPermisosUsuario($this->id)->datos) ? $permiso->consultarPermisosUsuario($this->id)->datos : array();
                 $this->empresa = new Empresa($datos[0]->empresa);
+
+                $permisos = $permiso->consultarPermisosTipoUsuario($datos[0]->tipo_usuario)->datos;
+                $this->permisos = isset($permisos) ? $permisos : array();
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
