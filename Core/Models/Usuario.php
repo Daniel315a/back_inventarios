@@ -8,7 +8,7 @@
         private $contrasenna;
         public $token;
         public $permisos;
-        
+        public $empresa;
 
         function __construct()
         {
@@ -45,6 +45,7 @@
                 $this->id = $datos[0]->id;
                 $this->nombre = $datos[0]->nombre;
                 $this->permisos = $permiso->consultarPermisosUsuario($this->id)->datos;
+                $this->empresa = new Empresa($datos[0]->empresa);
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
@@ -73,6 +74,7 @@
                 $this->contrasenna = $datos[0]->contrasenna;
                 $this->token = $datos[0]->token;
                 $this->permisos = isset($permiso->consultarPermisosUsuario($this->id)->datos) ? $permiso->consultarPermisosUsuario($this->id)->datos : array();
+                $this->empresa = new Empresa($datos[0]->empresa);
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
