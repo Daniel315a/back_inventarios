@@ -35,7 +35,7 @@
 
 				foreach ($acciones as $accion) 
 				{
-					if($_SERVER['REQUEST_METHOD'] == $accion->nombre)
+					if(strtolower($_SERVER['REQUEST_METHOD']) == $accion->nombre)
 					{
 						$tienePermiso = $accion->valor;
 					}	
