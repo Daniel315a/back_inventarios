@@ -44,7 +44,7 @@
 
                 $this->id = $datos[0]->id;
                 $this->nombre = $datos[0]->nombre;
-                $this->permisos = $permiso->consultarPermisosUsuario($this->id)->datos;
+                $this->permisos = isset($permiso->consultarPermisosUsuario($this->id)->datos) ? $permiso->consultarPermisosUsuario($this->id)->datos : array();
                 $this->empresa = new Empresa($datos[0]->empresa);
 
                 $respuesta = new \Respuesta([
