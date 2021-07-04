@@ -4,6 +4,7 @@
 	 * Variables globales del archivo
 	 */
 	$GLOBALS['parametros_faltantes'] = array();
+	$GLOBALS['usuario'] = new \Models\Usuario();
 
 	function verificarUsuario()
 	{
@@ -11,6 +12,7 @@
   		$usuario = new \Models\Usuario();
   		$usuario->token = obtenerTokenLoginWs();
   		$usuarioOk = $usuario->consultarPorToken()->resultado;
+		$GLOBALS['usuario'] = $usuario;
   		$controlador = obtenerControlador(true);
   		$peticion = strtolower($_SERVER['REQUEST_METHOD']);
 
