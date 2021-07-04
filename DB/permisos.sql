@@ -22,6 +22,9 @@ VALUES
 ),
 (
     'Persona'
+),
+(
+    'Factura'
 );
 
 INSERT INTO permisos(elemento, nombre)
@@ -49,6 +52,10 @@ VALUES
 (
     (SELECT id FROM elementos WHERE controlador = 'Persona'),
     'Gestionar personas'
+),
+(
+    (SELECT id FROM elementos WHERE controlador = 'Factura'),
+    'Gestionar facturas'
 );
 
 INSERT INTO acciones(nombre, valor, permiso)
@@ -145,12 +152,12 @@ VALUES
 ),
 (
     'PUT',
-    true,
+    false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar tipos documentos')
 ),
 (
     'DELETE',
-    true,
+    false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar tipos documentos')
 ),
 (
@@ -165,13 +172,33 @@ VALUES
 ),
 (
     'PUT',
-    true,
+    false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar personas')
 ),
 (
     'DELETE',
-    true,
+    false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar personas')
+),
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas')
+),
+(
+    'POST',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas')
+),
+(
+    'PUT',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas')
+),
+(
+    'DELETE',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas')
 );
 
 INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
@@ -198,5 +225,9 @@ VALUES
 ),
 (
     (SELECT id FROM permisos WHERE nombre = 'Gestionar personas'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+),
+(
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );

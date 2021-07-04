@@ -42,12 +42,12 @@
 
             $datos = $this->conexion->getData($sql);
             $respuesta = \Respuesta::obtenerDefault();
-            $consecutivo = new stdClass();
-            $consecutivo->consecutivo = 0;
+            $consecutivo = new \stdClass();
+            $consecutivo->consecutivo = 1;
 
             if($this->conexion->getCantidadRegistros() > 0)
             {
-                $consecutivo->consecutivo = $datos[0]->consecutivo;
+                $consecutivo->consecutivo = $datos[0]->consecutivo + 1;
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
