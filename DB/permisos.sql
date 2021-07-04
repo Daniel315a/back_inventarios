@@ -106,7 +106,7 @@ VALUES
 ),
 (
     'POST',
-    false,
+    true,
     (SELECT id FROM permisos WHERE nombre = 'Administrar productos')
 ),
 (
