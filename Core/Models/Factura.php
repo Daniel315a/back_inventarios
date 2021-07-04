@@ -26,7 +26,9 @@
             }
         }
 
-        // Métodos
+        /**
+         * Métodos
+         */
 
         public function consultarPorId()
         {
@@ -63,6 +65,39 @@
             }
 
             return $respuesta;
+        }
+
+        public function crear()
+        {
+            $this->consecutivo = $this->consultarConsecutivo()->datos->consecutivo;
+            $this->anulada = false;
+
+            $sql = "INSERT INTO decora_transforma.facturas
+            (
+                consecutivo,
+                cliente,
+                vendedor,
+                usuario,
+                valor_total,
+                porcentaje_comision,
+                valor_comision,
+                total_descuento
+            )
+            VALUES
+            (
+                {$this->consecutivo},
+                {$this->cliente->id},
+                {$this->vendedor->id},
+                {$this->usuario->id},
+                {$this->valor_total},
+                {$this->porcentaje_comision},
+                {$this->valor_comision},
+                {$this->total_descuento}
+            );";
+
+            $this->conexion->execCommand($sql);
+
+            return $this->obtenerRespuesta($this, true, false);
         }
 
     }

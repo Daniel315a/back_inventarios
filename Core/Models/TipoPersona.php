@@ -18,6 +18,10 @@
             }
         }
 
+        /**
+         * Métodos
+         */
+
         public function consultarPorId($id)
         {
             $this->id = $id;

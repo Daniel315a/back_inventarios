@@ -18,7 +18,9 @@
             }
         }
 
-        // Métodos
+        /**
+         * Métodos
+         */
 
         function consultarTodos()
         {
