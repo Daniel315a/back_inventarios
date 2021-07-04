@@ -4,7 +4,7 @@
 	 * Variables globales del archivo
 	 */
 	$GLOBALS['parametros_faltantes'] = array();
-	$GLOBALS['usuario'] = new \Models\Usuario();
+	$GLOBALS['usuario'] = new stdClass();
 
 	function verificarUsuario()
 	{
