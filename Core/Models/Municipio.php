@@ -10,17 +10,36 @@
         function __construct()
         {
             if(func_num_args() > 0)
-            {
+            {   
                 if(is_numeric(func_get_arg(0)))
                 {
-                    $this->id = func_get_arg(0);
-                    $this->consultarPorId();                    
-                }                
+                    $this->consultarPorId(func_get_arg(0));
+                }
             }
         }
 
+        public function consultarPorId($id)
+        {
+            $this->id = $id;
+            $sql = "SELECT * FROM municipios WHERE id = {$this->id};";
 
-        // Métodos
+            $conexion = new \Conexion();
+            $datos = $conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($conexion->getCantidadRegistros() > 0)
+            {
+                $this->nombre = $datos[0]->nombre;
+                $this->departamento = new \Models\Departamento($datos[0]->departamento);
+
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $this
+                ]);
+            }
+
+            return $respuesta;
+        }
 
         public function consultarPorDepartamento()
         {
@@ -40,29 +59,6 @@
 
             return $respuesta;
         }
-
-        public function consultarPorId()
-        {
-            $sql = "SELECT * FROM municipios WHERE id = {$this->id};";
-
-            $conexion = new \Conexion();
-            $datos = $conexion->getData($sql);
-            $respuesta = \Respuesta::obtenerDefault();
-
-            if($conexion->getCantidadRegistros() > 0)
-            {
-                $this->nombre = $datos[0]->nombre;
-                $this->departamento = new Departamento($datos[0]->departamento);
-
-                $respuesta = new \Respuesta([
-                    'resultado' => true,
-                    'datos' =>  $this
-                ]);
-            }
-
-            return $respuesta;
-        }
-
     }
     
 ?>

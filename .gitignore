@@ -2,5 +2,6 @@ DB/*.bak
 *.sublime-project
 *.sublime-workspace
 .vscode
+*.code-workspace
 /DB/*.bak
 /Core/config_conexion.php
