@@ -23,9 +23,18 @@
                         $respuesta = $producto->consultarPorId();
                     }
                 }
-
+                else if($solicitud == 'consultar_de_empresa')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, ['id_empresa']);
+                    
+                    if($parametrosOk)
+                    {
+                        $producto->empresa = new \Models\Empresa($_GET['id_empresa']);
+                        $respuesta = $producto->consultarPorEmpresa();
+                    }
+                }
             }
-
+            
             \responder($respuesta, $parametrosOk);
         }
 

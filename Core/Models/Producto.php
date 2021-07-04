@@ -118,6 +118,27 @@
             return $respuesta;
         }
 
+        public function consultarPorEmpresa()
+        {
+            $sql = "SELECT id, referencia, detalle 
+                    FROM productos 
+                    WHERE empresa = {$this->empresa->id} AND habilitado = true;";
+
+            $conexion = new \Conexion();
+            $datos = $conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($conexion->getCantidadRegistros() > 0)
+            {
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' =>  $datos
+                ]);
+            }
+
+            return $respuesta;
+        }
+
     }
     
 ?>
