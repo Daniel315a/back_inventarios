@@ -30,7 +30,39 @@
 
         public function consultarPorId()
         {
-            
+
+        }
+
+        public function consultarConsecutivo()
+        {
+            $sql = "SELECT consecutivo 
+                    FROM facturas
+                    ORDER BY consecutivo DESC
+                    LIMIT 1;";
+
+            $datos = $this->conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+            $consecutivo = new stdClass();
+            $consecutivo->consecutivo = 0;
+
+            if($this->conexion->getCantidadRegistros() > 0)
+            {
+                $consecutivo->consecutivo = $datos[0]->consecutivo;
+
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $consecutivo
+                ]);
+            }
+            else
+            {
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $consecutivo
+                ]);
+            }
+
+            return $respuesta;
         }
 
     }
