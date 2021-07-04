@@ -2,7 +2,7 @@
 
     class Producto
     {
-        
+
         public static function post()
         {
             $respuesta = \Respuesta::obtenerDefault();
@@ -13,7 +13,7 @@
             {
                 $solicitud = $_POST['solicitud'];
 
-                if($solicitud == 'crear_producto')
+                if($solicitud == 'crear')
                 {
                     $parametrosOk = \variablesEnArreglo($_POST, ['id_empresa', 'referencia']);
 
@@ -27,6 +27,22 @@
                         $producto->precio = $_POST['precio'];
 
                         $respuesta = $producto->crear();
+                    }
+                }
+                if($solicitud == 'actualizar')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
+
+                    if($parametrosOk)
+                    {
+                        $producto = new \Models\Producto($_POST['id']);
+                        
+                        $producto->detalle = isset($_POST['detalle']) ? $_POST['detalle'] : $producto->detalle;
+                        $producto->cantidad_interna = isset($_POST['cantidad_interna']) ? $_POST['cantidad_interna'] : $producto->cantidad_interna;
+                        $producto->cantidad_disponible = isset($_POST['cantidad_disponible']) ? $_POST['cantidad_disponible'] : $producto->cantidad_disponible;
+                        $producto->precio = isset($_POST['precio']) ? $_POST['precio'] : $producto->precio;
+
+                        $respuesta = $producto->actualizar();
                     }
                 }
             }
