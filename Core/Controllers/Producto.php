@@ -71,6 +71,18 @@
                         $respuesta = $producto->actualizar();
                     }
                 }
+                else if($solicitud == 'deshabilitar')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
+
+                    if($parametrosOk)
+                    {
+                        $producto = new \Models\Producto($_POST['id']);
+
+                        $producto->habilitado = 0; // False
+                        $respuesta = $producto->actualizar();
+                    }
+                }
             }
 
             \responder($respuesta, $parametrosOk);
