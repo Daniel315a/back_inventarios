@@ -13,6 +13,9 @@ VALUES
 ),
 (
     'TipoPersona'
+),
+(
+    'Producto'
 );
 
 INSERT INTO permisos(elemento, nombre)
@@ -28,6 +31,10 @@ VALUES
 (
     (SELECT id FROM elementos WHERE controlador = 'TipoPersona'),
     'Consultar tipos de persona'
+),
+(
+    (SELECT id FROM elementos WHERE controlador = 'Producto'),
+    'Administrar productos'
 );
 
 INSERT INTO acciones(nombre, valor, permiso)
@@ -91,6 +98,26 @@ VALUES
     'DELETE',
     false,
     (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona')
+),
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Administrar productos')
+),
+(
+    'POST',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Administrar productos')
+),
+(
+    'PUT',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Administrar productos')
+),
+(
+    'DELETE',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Administrar productos')
 );
 
 INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
@@ -105,5 +132,9 @@ VALUES
 ),
 (
     (SELECT id FROM permisos WHERE nombre = 'Consultar tipos de persona'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+),
+(
+    (SELECT id FROM permisos WHERE nombre = 'Administrar productos'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
