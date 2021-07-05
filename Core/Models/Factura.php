@@ -32,7 +32,33 @@
 
         public function consultarPorId()
         {
+            $sql = "SELECT * 
+                    FROM facturas 
+                    WHERE id = {$this->id};";
 
+            $datos = $this->conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($this->conexion->getCantidadRegistros() > 0)
+            {
+                $this->id = $datos[0]->id;
+                $this->consecutivo = $datos[0]->consecutivo;
+                $this->cliente = new Persona($datos[0]->cliente);
+                $this->vendedor = new Persona($datos[0]->vendedor);
+                $this->usuario = $GLOBALS['usuario'];
+                $this->valor_total = $datos[0]->valor_total;
+                $this->porcentaje_comision = $datos[0]->porcentaje_comision;
+                $this->valor_comision = $datos[0]->valor_comision;
+                $this->total_descuento = $datos[0]->total_descuento;
+                $this->anulada = $datos[0]->anulada;
+
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $this
+                ]);
+            }
+
+            return $respuesta;            
         }
 
         public function consultarConsecutivo()

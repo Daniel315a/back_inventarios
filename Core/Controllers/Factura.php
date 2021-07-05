@@ -17,6 +17,16 @@
                 {
                     $respuesta = $factura->consultarConsecutivo();
                 }
+                else if($solicitud == 'por_id')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, ['id']);
+
+                    if($parametrosOk)
+                    {
+                        $factura->id = $_GET['id'];
+                        $respuesta = $factura->consultarPorId();
+                    }
+                }
             }
 
             \responder($respuesta, $parametrosOk);
