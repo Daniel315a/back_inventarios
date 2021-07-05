@@ -146,6 +146,15 @@
             return $this->obtenerRespuesta($this, true, false);
         }
 
+        public function anular()
+        {
+            $sql = "UPDATE facturas SET anulada = true WHERE id = {$this->id};";
+
+            $this->conexion->execCommand($sql);
+
+            return $this->obtenerRespuesta(null, false, true);
+        }
+
     }
     
 ?>

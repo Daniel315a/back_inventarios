@@ -66,6 +66,16 @@
                         $respuesta = $factura->crear();
                     }
                 }
+                else if($solicitud == 'anular')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
+
+                    if($parametrosOk)
+                    {
+                        $factura->id = $_POST['id'];
+                        $respuesta = $factura->anular();
+                    }
+                }
             }
 
             \responder($respuesta, $parametrosOk);
