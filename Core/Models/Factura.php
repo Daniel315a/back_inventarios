@@ -61,6 +61,26 @@
             return $respuesta;            
         }
 
+        public function consultarListado()
+        {
+            $sql = "SELECT
+                        facturas.id,
+                        consecutivo,
+                        CASE
+                            WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                            ELSE personas.razon_social
+                        END AS nombre_cliente,
+                        valor_total
+                    FROM facturas
+                        LEFT JOIN personas
+                            ON facturas.cliente = personas.id
+                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id};";
+
+            $datos = $this->conexion->getData($sql);
+
+            return $this->obtenerRespuesta($datos, false, false);
+        }
+
         public function consultarConsecutivo()
         {
             $sql = "SELECT consecutivo 

@@ -27,6 +27,10 @@
                         $respuesta = $factura->consultarPorId();
                     }
                 }
+                else if($solicitud == 'listado')
+                {
+                    $respuesta = $factura->consultarListado();
+                }
             }
 
             \responder($respuesta, $parametrosOk);
