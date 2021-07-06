@@ -151,7 +151,21 @@
 
             $this->conexion->execCommand($sql);
 
-            return $this->obtenerRespuesta($this, true, false);
+            $respuesta = $this->obtenerRespuesta($this, true, false);
+
+            if($respuesta->resultado)
+            {
+                $respuesta_detalles = \Models\DetalleFactura::crearDeFactura($_POST['detalles'], $this->id);
+
+                if($respuesta_detalles->resultado)
+                {
+                    $this->detalles = $respuesta_detalles->datos;
+                }
+            }
+
+            $respuesta = $this->obtenerRespuesta($this, true, false);
+
+            return $respuesta;
         }
 
         public function anular()
