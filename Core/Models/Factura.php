@@ -12,6 +12,7 @@
         public $porcentaje_comision;
         public $valor_comision;
         public $total_descuento;
+        public $detalles;
         public $anulada;
 
         function __construct()
@@ -51,6 +52,13 @@
                 $this->valor_comision = $datos[0]->valor_comision;
                 $this->total_descuento = $datos[0]->total_descuento;
                 $this->anulada = $datos[0]->anulada;
+
+                $respuesta_detalles = DetalleFactura::consultarDeFactura($this->id);
+                
+                if($respuesta_detalles->resultado)
+                {
+                    $this->detalles = $respuesta_detalles->datos;    
+                }
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
