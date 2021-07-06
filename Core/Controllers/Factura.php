@@ -64,11 +64,6 @@
                         $factura->total_descuento = isset($_POST['total_descuento']) ? $_POST['total_descuento'] : 0;
 
                         $respuesta = $factura->crear();
-
-                        if($respuesta->resultado)
-                        {
-                            \Models\DetalleFactura::crearDeFactura($_POST['detalles'], $factura->id);
-                        }
                     }
                 }
                 else if($solicitud == 'anular')
