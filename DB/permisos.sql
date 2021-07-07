@@ -200,3 +200,38 @@ VALUES
     (SELECT id FROM permisos WHERE nombre = 'Gestionar personas'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
+
+-- Permisos para gestión de prestamos.
+
+INSERT INTO elementos (controlador)
+VALUES
+(
+    'Prestamo'
+);
+
+INSERT INTO permisos(elemento, nombre)
+VALUES
+(
+    (SELECT id FROM elementos WHERE controlador = 'Prestamo'),
+    'Gestion de prestamos'
+);
+
+INSERT INTO acciones(nombre, valor, permiso)
+VALUES
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de prestamos')
+),
+(
+    'POST',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de prestamos')
+);
+
+INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
+VALUES
+(
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de prestamos'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+);
