@@ -121,7 +121,7 @@
             return $respuesta;
         }
 
-        public function crear()
+        public function crear($detalles)
         {
             $this->consecutivo = $this->consultarConsecutivo()->datos->consecutivo;
             $this->anulada = false;
@@ -155,7 +155,7 @@
 
             if($respuesta->resultado)
             {
-                $respuesta_detalles = \Models\DetalleFactura::crearDeFactura($_POST['detalles'], $this->id);
+                $respuesta_detalles = \Models\DetalleFactura::crearDeFactura($detalles, $this->id);
 
                 if($respuesta_detalles->resultado)
                 {

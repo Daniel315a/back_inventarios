@@ -63,7 +63,7 @@
                         $factura->valor_comision = isset($_POST['valor_comision']) ? $_POST['valor_comision'] : 0;
                         $factura->total_descuento = isset($_POST['total_descuento']) ? $_POST['total_descuento'] : 0;
 
-                        $respuesta = $factura->crear();
+                        $respuesta = $factura->crear($_POST['detalles']);
                     }
                 }
                 else if($solicitud == 'anular')
