@@ -235,3 +235,39 @@ VALUES
     (SELECT id FROM permisos WHERE nombre = 'Gestion de prestamos'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
+
+
+-- Permisos para gestión de cotizaciones.
+
+INSERT INTO elementos (controlador)
+VALUES
+(
+    'Cotizacion'
+);
+
+INSERT INTO permisos(elemento, nombre)
+VALUES
+(
+    (SELECT id FROM elementos WHERE controlador = 'Cotizacion'),
+    'Gestion de cotizaciones'
+);
+
+INSERT INTO acciones(nombre, valor, permiso)
+VALUES
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de cotizaciones')
+),
+(
+    'POST',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de cotizaciones')
+);
+
+INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
+VALUES
+(
+    (SELECT id FROM permisos WHERE nombre = 'Gestion de cotizaciones'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+);

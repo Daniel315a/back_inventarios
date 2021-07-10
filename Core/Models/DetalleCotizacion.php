@@ -1,12 +1,14 @@
 <?php namespace Models;
 
-    class DetallePrestamo extends BaseModelo
+    class DetalleCotizacion extends BaseModelo
     {
     
         public $id;
+        public $cotizacion;
         public $producto;
-        public $prestamo;
         public $cantidad;
+        public $descripcion;
+        public $precio_total;
 
         function __construct(){
             parent::__construct();
@@ -22,7 +24,7 @@
         public function consultarPorId($id)
         {
             $this->id = $id;
-            $sql = "SELECT * FROM detalles_prestamo WHERE id = {$this->id};";
+            $sql = "SELECT * FROM detalles_cotizacion WHERE id = {$this->id};";
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
@@ -30,9 +32,11 @@
 
             if($conexion->getCantidadRegistros() > 0)
             {
+                $this->cotizacion = new \Models\Cotizacion($datos[0]->cotizacion);
                 $this->producto = new \Models\Producto($datos[0]->producto);
-                $this->prestamo = new \Models\Prestamo($datos[0]->prestamo);
                 $this->cantidad = $datos[0]->cantidad;
+                $this->descripcion = $datos[0]->descripcion;
+                $this->precio_total = $datos[0]->precio_total;
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
@@ -43,11 +47,11 @@
             return $respuesta;
         }
 
-        public function consultarPorPrestamo($idPrestamo)
+        public function consultarPorCotizacion($idCotizacion)
         {
             $sql = "SELECT *
-            FROM detalles_prestamo 
-            WHERE prestamo = {$idPrestamo};";
+            FROM detalles_cotizacion 
+            WHERE cotizacion = {$idCotizacion};";
             
 
             $conexion = new \Conexion();
@@ -65,13 +69,17 @@
 
         function crear(){
             
-            $sql = "INSERT INTO detalles_prestamo(
+            $sql = "INSERT INTO detalles_cotizacion(
+                cotizacion,
                 producto,
-                prestamo,
-                cantidad
-            ) VALUES({$this->producto},
-            {$this->prestamo},
-            {$this->cantidad})";
+                cantidad,
+                descripcion,
+                precio_total
+            ) VALUES({$this->cotizacion},
+            {$this->producto},
+            {$this->cantidad},
+            '{$this->descripcion}',
+            {$this->precio_total})";
 
             $this->conexion->execCommand($sql);
 
@@ -79,15 +87,15 @@
         }
 
         function eliminar(){
-            $sql = "DELETE FROM detalles_prestamo WHERE id = {$this->id};";
+            $sql = "DELETE FROM detalles_cotizacion WHERE id = {$this->id};";
     
             $this->conexion->execCommand($sql);
     
             return $this->obtenerRespuesta($this, false, true);
         }
         
-        function eliminarPorPrestamo($idPrestamo){
-            $sql = "DELETE FROM detalles_prestamo WHERE prestamo = {$idPrestamo};";
+        function eliminarPorCotizacion($idCotizacion){
+            $sql = "DELETE FROM detalles_cotizacion WHERE cotizacion = {$idCotizacion};";
     
             $this->conexion->execCommand($sql);
     
