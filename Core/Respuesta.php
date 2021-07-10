@@ -200,7 +200,7 @@
 				$respuesta->mensaje = SOLICITUD_OK;
 			}
 
-			echo json_encode($respuesta);
+			echo json_encode($respuesta, JSON_NUMERIC_CHECK );
 
 			return $respuesta;
 		}

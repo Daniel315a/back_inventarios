@@ -1,14 +1,12 @@
 <?php namespace Models;
 
-    class Prestamo extends BaseModelo
+    class DetallePrestamo extends BaseModelo
     {
     
         public $id;
-        public $distribuidor;
-        public $empleado;
-        public $fecha_prestamo;
-        public $fecha_devolucion;
-        public $detalles;
+        public $producto;
+        public $prestamo;
+        public $cantidad;
 
         function __construct(){
             parent::__construct();
@@ -36,7 +34,6 @@
                 $this->empleado = new \Models\Persona($datos[0]->empleado);
                 $this->fecha_prestamo = $datos[0]->fecha_prestamo;
                 $this->fecha_devolucion = $datos[0]->fecha_devolucion;
-                $this->detalles = (new \Models\DetallePrestamo())->consultarPorPrestamo($this->id);
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
@@ -47,49 +44,35 @@
             return $respuesta;
         }
 
-        public function consultarPorEmpresa($idEmpresa)
+        public function consultarPorPrestamo($idPrestamo)
         {
-            $empresa = 0;
-            if(isset($GLOBALS['usuario'])){
-                $empresa = $GLOBALS['usuario']->empresa->id;
-            }else{
-                $empresa = $idEmpresa;
-            }
-
-            $sql = "SELECT prestamos.id, personas.numero_documento, 
-                personas.nombres, personas.apellidos, prestamos.fecha_prestamo, prestamos.fecha_devolucion
-            FROM prestamos 
-                LEFT JOIN personas
-                    ON personas.id = prestamos.distribuidor
-            WHERE empresa = {$empresa};";
+            $sql = "SELECT *
+            FROM detalles_prestamo 
+            WHERE prestamo = {$idPrestamo};";
             
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
             $respuesta = \Respuesta::obtenerDefault();
+            $listaDetalles = array();
 
             if($conexion->getCantidadRegistros() > 0)
             {
-                $respuesta = new \Respuesta([
-                    'resultado' => true,
-                    'datos' => $datos
-                ]);
+                $listaDetalles = $datos;
             }
 
-            return $respuesta;
+            return $listaDetalles;
         }
 
         function crear(){
             
-            $sql = "INSERT INTO prestamos(
-                distribuidor,
-                empleado,
-                fecha_prestamo,
-                fecha_devolucion
-            ) VALUES({$this->distribuidor->id},
-            {$this->empleado->id},
-            ". ModelosUtil::verificarNull($this->fecha_prestamo, false).",
-            ". ModelosUtil::verificarNull($this->fecha_devolucion, false).")";
+            $sql = "INSERT INTO detalles_prestamo(
+                producto,
+                prestamo,
+                cantidad
+            ) VALUES({$this->producto},
+            {$this->prestamo},
+            {$this->cantidad})";
 
             $this->conexion->execCommand($sql);
 
@@ -97,7 +80,15 @@
         }
 
         function eliminar(){
-            $sql = "DELETE FROM prestamos WHERE id = {$this->id};";
+            $sql = "DELETE FROM detalles_prestamo WHERE id = {$this->id};";
+    
+            $this->conexion->execCommand($sql);
+    
+            return $this->obtenerRespuesta($this, false, true);
+        }
+        
+        function eliminarPorPrestamo($idPrestamo){
+            $sql = "DELETE FROM detalles_prestamo WHERE prestamo = {$idPrestamo};";
     
             $this->conexion->execCommand($sql);
     

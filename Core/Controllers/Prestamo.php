@@ -13,6 +13,15 @@
             {
                 $solicitud = $_GET['solicitud'];
 
+                if($solicitud == 'consultar_por_id')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, ['id']);
+
+                    if($parametrosOk){
+                        $respuesta = $prestamo->consultarPorId($_GET['id']);
+                    }
+                }
+
                 if($solicitud == 'consultar_por_empresa')
                 {
                     $idEmpresa = 0;
@@ -53,6 +62,23 @@
         
                         $respuesta = $prestamo->crear();
 
+                        if($respuesta->resultado){
+                            if(isset($_POST['detalles'])){
+                                $prestamo->detalles = array();
+                                $detalles = \json_decode($_POST['detalles']);
+
+                                foreach ($detalles as $i => $detalle) {
+                                    $detalleNuevo = new \Models\DetallePrestamo();
+                                    /*No se crean los objetos porque no retorna el json correctamente. */
+                                    $detalleNuevo->prestamo = $prestamo->id;
+                                    $detalleNuevo->producto = $detalle->producto;
+                                    $detalleNuevo->cantidad = $detalle->cantidad;
+
+                                    $detalleNuevo->crear();
+                                    array_push($prestamo->detalles, $detalleNuevo);
+                                }
+                            }
+                        }
                     }
                 }
                 /*
@@ -118,6 +144,28 @@
                         }
 
                         
+                    }
+    
+                }
+
+                if($solicitud == 'eliminar_detalle'){
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
+    
+                    if($parametrosOk === true){
+                        $detalle = new \Models\DetallePrestamo($_POST['id']);
+
+                        $respuesta = $detalle->eliminar();
+                    }
+    
+                }
+                
+                if($solicitud == 'eliminar_detalles'){
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
+    
+                    if($parametrosOk === true){
+                        $detalle = new \Models\DetallePrestamo();
+
+                        $respuesta = $detalle->eliminarPorPrestamo($_POST['id']);
                     }
     
                 }
