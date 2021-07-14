@@ -1,6 +1,6 @@
 <?php namespace Models;
 
-    class DetalleRemision extends BaseModelo
+    class DetalleDevolucion extends BaseModelo
     {
 
         public $id;
@@ -13,6 +13,32 @@
         /**
          * Métodos
          */
+
+        public function crear($remision)
+        {
+            $sql = "INSERT INTO decora_transforma.detalles_devolucion
+                    (
+                        producto,
+                        remision,
+                        cantidad,
+                        precio,
+                        inventario_interno,
+                        descripcion
+                    )
+                    VALUES
+                    (
+                        {$this->producto->id},
+                        {$remision->id},
+                        {$this->cantidad},
+                        {$this->precio},
+                        {$this->inventario_interno},
+                        '{$this->descripcion}'
+                    );";
+                
+            $this->conexion->execCommand($sql);
+
+            return $this->obtenerRespuesta($this, true, false);
+        }
 
     }
     
