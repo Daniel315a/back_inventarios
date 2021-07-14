@@ -61,7 +61,7 @@
                         $respuesta = $remision->crear();
                     }
                 }
-                if($solicitud == 'actualizar')
+                else if($solicitud == 'actualizar')
                 {
                     $parametrosOk = \variablesEnArreglo($_POST, [
                         'id',
@@ -79,6 +79,26 @@
                         $remision->fecha_instalacion = isset($_POST['fecha_instalacion']) ? $_POST['fecha_instalacion'] : $remision->fecha_instalacion;
 
                         $respuesta = $remision->actualizar();
+                    }
+                }
+                else if($solicitud == 'agregar_soporte')
+                {      
+                    $parametrosOk = \variablesEnArreglo($_POST, [
+                        'id'
+                    ]);
+
+                    if($parametrosOk)
+                    {
+                        $remision = new \Models\Remision($_POST['id']);
+                        $file = isset($_FILES['archivo']) ? $_FILES['archivo'] : null;
+    
+                        if($file != null){
+                            $extensionArchivo = pathinfo($file['name'], PATHINFO_EXTENSION);
+                            $remision->nombre_archivo_soporte = date('dmYHi', time()) . uniqid() . '.'. $extensionArchivo;
+                            $ruta = './documentos/' . $remision->nombre_archivo_soporte;
+                            move_uploaded_file($file['tmp_name'], $ruta);
+                            $respuesta = $remision->actualizar();
+                        }
                     }
                 }
             }
