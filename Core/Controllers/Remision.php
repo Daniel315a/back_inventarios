@@ -3,6 +3,31 @@
     class Remision
     {
         
+        public static function get()
+        {
+            $respuesta = \Respuesta::obtenerDefault();
+            $remision = new \Models\Remision();
+            $parametrosOk = true;
+
+            if(isset($_GET['solicitud']))
+            {
+                $solicitud = $_GET['solicitud'];
+
+                if($solicitud == 'por_id')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, ['id']);
+
+                    if($parametrosOk)
+                    {
+                        $remision->id = $_GET['id'];
+                        $respuesta = $remision->consultarPorId();
+                    }
+                }
+            }
+
+            \responder($respuesta, $parametrosOk);
+        }
+
         public static function post()
         {
             $respuesta = \Respuesta::obtenerDefault();
