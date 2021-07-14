@@ -12,6 +12,19 @@
         public $fecha_entrega;
         public $fecha_instalacion;
 
+        function __construct()
+        {
+            parent::__construct();
+            if(func_num_args() > 0)
+            {   
+                if(is_numeric(func_get_arg(0)))
+                {
+                    $this->id = func_get_arg(0);
+                    $this->consultarPorId();
+                }
+            }
+        }
+
         /**
          * Métodos
          */
@@ -19,7 +32,7 @@
         public function crear()
         {
             $sql = "
-            INSERT INTO decora_transforma.remisiones
+            INSERT INTO remisiones
             (
                 factura,
                 encargado,
@@ -109,6 +122,23 @@
             }
 
             return $respuesta;
+        }
+
+        public function actualizar()
+        {
+            $sql = "UPDATE remisiones
+                    SET
+                        encargado = {$this->encargado->id},
+                        estado = {$this->estado},
+                        nombre_archivo_soporte = '{$this->nombre_archivo_soporte}',
+                        notas = '{$this->notas}',
+                        fecha_entrega = '{$this->fecha_entrega}',
+                        fecha_instalacion = '{$this->fecha_instalacion}'
+                    WHERE id = {$this->id};";
+
+            $this->conexion->execCommand($sql);
+
+            return $this->obtenerRespuesta(null, false, true);
         }
 
     }

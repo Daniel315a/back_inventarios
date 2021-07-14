@@ -44,14 +44,42 @@
 
                 if($solicitud == 'crear')
                 {
-                    $remision->factura = new \Models\Factura($_POST['id_factura']);
-                    $remision->encargado = new \Models\Persona($_POST['id_encargado']);
-                    $remision->estado = false;
-                    $remision->notas = $_POST['notas'];
-                    $remision->fecha_entrega = $_POST['fecha_entrega'];
-                    $remision->fecha_instalacion = $_POST['fecha_instalacion'];
+                    $parametrosOk = \variablesEnArreglo($_POST, [
+                        'id_factura',
+                        'id_encargado'
+                    ]);
 
-                    $respuesta = $remision->crear();
+                    if($parametrosOk)
+                    {
+                        $remision->factura = new \Models\Factura($_POST['id_factura']);
+                        $remision->encargado = new \Models\Persona($_POST['id_encargado']);
+                        $remision->estado = false;
+                        $remision->notas = $_POST['notas'];
+                        $remision->fecha_entrega = $_POST['fecha_entrega'];
+                        $remision->fecha_instalacion = $_POST['fecha_instalacion'];
+
+                        $respuesta = $remision->crear();
+                    }
+                }
+                if($solicitud == 'actualizar')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, [
+                        'id',
+                    ]);
+
+                    if($parametrosOk)
+                    {
+                        $remision = new \Models\Remision($_POST['id']);
+
+                        $remision->encargado = isset($_POST['encargado']) ? new \Models\Persona($_POST['encargado']) : $remision->encargado;
+                        $remision->estado = isset($_POST['estado']) ? $_POST['estado'] : $remision->estado;
+                        $remision->nombre_archivo_soporte = isset($_POST['nombre_archivo_soporte']) ? $_POST['nombre_archivo_soporte'] : $remision->nombre_archivo_soporte;
+                        $remision->notas = isset($_POST['notas']) ? $_POST['notas'] : $remision->notas;
+                        $remision->fecha_entrega = isset($_POST['fecha_entrega']) ? $_POST['fecha_entrega'] : $remision->fecha_entrega;
+                        $remision->fecha_instalacion = isset($_POST['fecha_instalacion']) ? $_POST['fecha_instalacion'] : $remision->fecha_instalacion;
+
+                        $respuesta = $remision->actualizar();
+                    }
                 }
             }
 
