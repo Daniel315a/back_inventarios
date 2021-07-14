@@ -28,6 +28,9 @@ VALUES
 ),
 (
     'Remision'
+),
+(
+    'DetalleDevolucion'
 );
 
 INSERT INTO permisos(elemento, nombre)
@@ -63,6 +66,10 @@ VALUES
 (
     (SELECT id FROM elementos WHERE controlador = 'Remision'),
     'Gestionar remisiones'
+),
+(
+    (SELECT id FROM elementos WHERE controlador = 'DetalleDevolucion'),
+    'Gestionar detalles de devoluciones'
 );
 
 INSERT INTO acciones(nombre, valor, permiso)
@@ -226,6 +233,26 @@ VALUES
     'DELETE',
     false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones')
+),
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar detalles de devoluciones')
+),
+(
+    'POST',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar detalles de devoluciones')
+),
+(
+    'PUT',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar detalles de devoluciones')
+),
+(
+    'DELETE',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar detalles de devoluciones')
 );
 
 INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
@@ -260,6 +287,10 @@ VALUES
 ),
 (
     (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+),
+(
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar detalles de devoluciones'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
 
