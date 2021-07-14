@@ -22,7 +22,8 @@
             {   
                 if(is_numeric(func_get_arg(0)))
                 {
-                    $this->consultarPorId(func_get_arg(0));
+                    $this->id = func_get_arg(0);
+                    $this->consultarPorId();
                 }
             }
         }
