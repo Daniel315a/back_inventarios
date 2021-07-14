@@ -24,7 +24,9 @@
             }
         }
 
-        // Métodos
+        /**
+         * Métodos
+         */
 
         public function crear()
         {

@@ -21,3 +21,7 @@ VALUES
 ('Vendedor', true),
 ('Instalador', true),
 ('Distribuidor', false);
+
+INSERT INTO tipos_documento (nombre)
+VALUES
+('Cédula de ciudadanía');
