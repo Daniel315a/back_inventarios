@@ -25,6 +25,9 @@ VALUES
 ),
 (
     'Factura'
+),
+(
+    'Remision'
 );
 
 INSERT INTO permisos(elemento, nombre)
@@ -56,6 +59,10 @@ VALUES
 (
     (SELECT id FROM elementos WHERE controlador = 'Factura'),
     'Gestionar facturas'
+),
+(
+    (SELECT id FROM elementos WHERE controlador = 'Remision'),
+    'Gestionar remisiones'
 );
 
 INSERT INTO acciones(nombre, valor, permiso)
@@ -199,6 +206,26 @@ VALUES
     'DELETE',
     false,
     (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas')
+),
+(
+    'GET',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones')
+),
+(
+    'POST',
+    true,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones')
+),
+(
+    'PUT',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones')
+),
+(
+    'DELETE',
+    false,
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones')
 );
 
 INSERT INTO permisos_x_tipos_usuario(permiso, tipo_usuario)
@@ -229,5 +256,9 @@ VALUES
 ),
 (
     (SELECT id FROM permisos WHERE nombre = 'Gestionar facturas'),
+    (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
+),
+(
+    (SELECT id FROM permisos WHERE nombre = 'Gestionar remisiones'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
