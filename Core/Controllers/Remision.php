@@ -23,6 +23,10 @@
                         $respuesta = $remision->consultarPorId();
                     }
                 }
+                else if($solicitud == 'consultar_listado')
+                {
+                    $respuesta = $remision->consultarListado();
+                }
             }
 
             \responder($respuesta, $parametrosOk);

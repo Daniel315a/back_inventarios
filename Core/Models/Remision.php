@@ -74,7 +74,41 @@
 
         public function consultarListado()
         {
-            
+            $sql = "SELECT 
+                        remisiones.id,
+                        personas.numero_documento,
+                        CASE
+                            WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                            ELSE personas.razon_social
+                        END AS nombre_cliente,
+                        encargado.numero_documento AS numero_documento_encargado,
+                        CASE
+                            WHEN encargado.razon_social IS NULL OR encargado.razon_social = '' THEN CONCAT(encargado.nombres, ' ', encargado.apellidos)
+                            ELSE encargado.razon_social
+                        END AS nombre_encargado,
+                        fecha_entrega,
+                        fecha_instalacion
+                    FROM remisiones
+                        LEFT JOIN facturas
+                            ON factura = facturas.id
+                        LEFT JOIN personas
+                            ON facturas.cliente = personas.id
+                        LEFT JOIN personas AS encargado
+                            ON encargado.id = remisiones.encargado
+                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id};";
+
+            $datos = $this->conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($this->conexion->getCantidadRegistros() > 0)
+            {
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $datos
+                ]);
+            }
+
+            return $respuesta;
         }
 
     }
