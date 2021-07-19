@@ -1,6 +1,6 @@
 <?php namespace Models;
 
-    class Producto
+    class Producto extends BaseModelo
     {
     
         public $id;
@@ -14,6 +14,7 @@
 
         function __construct()
         {
+            parent::__construct();
             if(func_num_args() > 0)
             {
                 if(is_numeric(func_get_arg(0)))
@@ -139,6 +140,26 @@
             }
 
             return $respuesta;
+        }
+
+        public function actualizar_existencias($detalles, $sumar = false)
+        {
+            $signo = $sumar ? '+' : '-';
+            $sql = "";
+
+            foreach ($detalles as $detalle) {
+
+                if(isset($detalle->cantidad))
+                {
+                    $sql .= "UPDATE producto
+                                SET cantidad_disponible = cantidad_disponible {$signo} {$detalle->cantidad}
+                            WHERE id = {$detalle->producto->id};";
+                }
+
+            }
+
+            $this->conexion->execCommand($sql);
+            return $this->obtenerRespuesta(null, false, true);
         }
 
     }
