@@ -11,6 +11,7 @@
         public $notas;
         public $fecha_entrega;
         public $fecha_instalacion;
+        public $detalles_devolucion;
 
         function __construct()
         {
@@ -75,6 +76,13 @@
                 $this->notas = $datos[0]->notas;
                 $this->fecha_entrega = $datos[0]->fecha_entrega;
                 $this->fecha_instalacion = $datos[0]->fecha_instalacion;
+
+                $respuesta_detalles = DetalleDevolucion::consultarDeRemision($this->id);
+
+                if($respuesta_detalles->resultado)
+                {
+                    $this->detalles_devolucion = $respuesta_detalles->datos;
+                }
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,

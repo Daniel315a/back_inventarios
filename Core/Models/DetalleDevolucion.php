@@ -40,6 +40,37 @@
             return $this->obtenerRespuesta($this, true, false);
         }
 
+        public static function consultarDeRemision($id_remision)
+        {
+            $sql = "SELECT 
+                        id,
+                        producto,
+                        cantidad,
+                        precio,
+                        inventario_interno,
+                        descripcion
+                    FROM detalles_devolucion
+                    WHERE remision = {$id_remision};";
+
+            $conexion = new \Conexion();
+            $datos = $conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($conexion->getCantidadRegistros() > 0)
+            {
+                foreach ($datos as $detalle) {
+                    $detalle->producto = new Producto($detalle->producto);
+                }
+
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos'=> $datos
+                ]);
+            }
+
+            return $respuesta;
+        }
+
     }
     
 ?>
