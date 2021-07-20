@@ -100,9 +100,12 @@
 
             if($conexion->getRegistrosAfectados() > 0)
             {
+                $detalles = DetalleFactura::consultarDeFactura($id_factura)->datos;
+                Producto::actualizar_existencias($detalles);
+
                 $respuesta = new \Respuesta([
                     'resultado' => true,
-                    'datos' => DetalleFactura::consultarDeFactura($id_factura)->datos
+                    'datos' => $detalles
                 ]);
             }
 
