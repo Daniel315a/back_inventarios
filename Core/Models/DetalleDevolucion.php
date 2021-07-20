@@ -36,8 +36,23 @@
                     );";
                 
             $this->conexion->execCommand($sql);
+            $respuesta = $this->obtenerRespuesta($this, true, false);
 
-            return $this->obtenerRespuesta($this, true, false);
+            if($respuesta->resultado == true)
+            {
+                if($this->inventario_interno == true)
+                {
+                    $this->producto->cantidad_interna = $this->producto->cantidad_interna + $this->cantidad;
+                }
+                else
+                {
+                    $this->producto->cantidad_disponible = $this->producto->cantidad_disponible + $this->cantidad;
+                }
+
+                $respuesta = $this->producto->actualizar();
+            }
+
+            return $respuesta;
         }
 
         public static function consultarDeRemision($id_remision)
