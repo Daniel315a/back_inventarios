@@ -142,24 +142,56 @@
             return $respuesta;
         }
 
-        public function actualizar_existencias($detalles, $sumar = false)
+        public static function actualizar_existencias($detalles, $sumar = false)
         {
             $signo = $sumar ? '+' : '-';
-            $sql = "";
 
-            foreach ($detalles as $detalle) {
+            $case = "";
+            $where = "";
+
+            for ($i=0; $i < \count($detalles); $i++)
+            {
+                $detalle = $detalles[$i];
 
                 if(isset($detalle->cantidad))
                 {
-                    $sql .= "UPDATE producto
-                                SET cantidad_disponible = cantidad_disponible {$signo} {$detalle->cantidad}
-                            WHERE id = {$detalle->producto->id};";
+                    $case .= "WHEN id = {$detalle->producto->id} THEN (cantidad_disponible {$signo} {$detalle->cantidad})\n";
+
+                    $where .= "id = {$detalle->producto->id}";
+
+                    if($i < (\count($detalles) - 1))
+                    {
+                        $where .= " OR \n";
+                    }
+                    else 
+                    {
+                        $where .= ";";
+                    }
                 }
 
             }
 
-            $this->conexion->execCommand($sql);
-            return $this->obtenerRespuesta(null, false, true);
+            $sql = "UPDATE productos
+                        SET cantidad_disponible = 
+                        (
+                            CASE
+                                {$case}
+                            END
+                        )
+                    WHERE {$where}";
+                    
+            $conexion = new \Conexion();
+            $conexion->execCommand($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($conexion->getRegistrosAfectados() > 0)
+            {
+                $respuesta = new \Respuesta([
+                    'resultado' => true
+                ]);
+            }
+
+            return $respuesta;
         }
 
     }
