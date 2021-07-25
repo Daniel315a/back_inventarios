@@ -366,3 +366,7 @@ VALUES
     (SELECT id FROM permisos WHERE nombre = 'Gestion de cotizaciones'),
     (SELECT id FROM tipos_usuario WHERE nombre = 'Administrador')
 );
+
+/*
+ * Esta línea siempre debe ir al final
+ */
