@@ -370,3 +370,5 @@ VALUES
 /*
  * Esta línea siempre debe ir al final
  */
+
+UPDATE permisos SET acceso_permitido = true WHERE id > 0;
