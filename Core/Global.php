@@ -35,13 +35,24 @@
 			{
 				$acciones = $permiso->acciones;
 
-				foreach ($acciones as $accion) 
+				if(isset($permiso->solicitud))
 				{
-					if(strtolower($_SERVER['REQUEST_METHOD']) == $accion->nombre)
+					if($permiso->solicitud->nombre == obtenerSolicitud())
 					{
-						$tienePermiso = $accion->valor;
-					}	
+						$tienePermiso = $permiso->acceso_denegado ? false : true;
+					}
 				}
+				else
+				{
+					foreach ($acciones as $accion) 
+					{
+						if(strtolower($_SERVER['REQUEST_METHOD']) == $accion->nombre)
+						{
+							$tienePermiso = $accion->valor;
+						}	
+					}
+				}
+				
 			}
 		}
 
@@ -111,6 +122,33 @@
 		}
 
 		return $token;
+	}
+
+	function obtenerSolicitud()
+	{
+		$metodo = $_SERVER['REQUEST_METHOD'];
+		$solicitud = '';
+
+		if($metodo == 'GET')
+		{
+			$solicitud = isset($_GET['solicitud']) ? $_GET['solicitud'] : null;
+		}
+		else if($metodo == 'POST')
+		{
+			$solicitud = isset($_POST['solicitud']) ? $_POST['solicitud'] : null;
+		}
+		else if($metodo == 'PUT')
+		{
+			$_PUT = _PUT();
+			$solicitud = isset($_PUT['solicitud']) ? $_PUT['solicitud'] : null;
+		}
+		else if($metodo == 'DELETE')
+		{
+			$_DELETE = _DELETE();
+			$solicitud = isset($_DELETE['solicitud']) ? $_DELETE['solicitud'] : null;
+		}
+
+		return $solicitud;
 	}
 
 	/*
