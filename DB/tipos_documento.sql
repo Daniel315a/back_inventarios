@@ -1,1 +1,0 @@
-INSERT INTO tipos_documento (id,nombre) VALUES (1,'Cédula');
