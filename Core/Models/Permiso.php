@@ -92,7 +92,8 @@
 						ON permisos.id = delete_.permiso AND delete_.nombre = 'DELETE'
 					LEFT JOIN solicitudes
 						ON solicitudes.id = permisos.solicitud
-				WHERE permisos_x_tipos_usuario.tipo_usuario = {$id_tipo_usuario};";
+				WHERE permisos_x_tipos_usuario.tipo_usuario = {$id_tipo_usuario}
+				ORDER BY id_solicitud ASC;";
 
 			$conexion = new \Conexion();
 			$data = $conexion->getData($sql);
