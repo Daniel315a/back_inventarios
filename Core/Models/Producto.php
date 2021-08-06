@@ -31,7 +31,7 @@
 
         public function crear()
         {
-            $sql = "INSERT INTO decora_transforma.productos
+            $sql = "INSERT INTO productos
             (
                 empresa,
                 referencia,
