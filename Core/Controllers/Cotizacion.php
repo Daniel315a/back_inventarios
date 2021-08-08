@@ -46,11 +46,18 @@
                 $solicitud = $_POST['solicitud'];
     
                 if($solicitud == 'crear'){
-                    $parametrosOk = \variablesEnArreglo($_POST, ['cliente', 'notas', 'precio_total']);
+                    $parametrosOk = \variablesEnArreglo($_POST, 
+                    [
+                        'fecha',
+                        'cliente', 
+                        'notas', 
+                        'precio_total'
+                    ]);
                     
                     if($parametrosOk === true){
+                        $cotizacion->fecha = $_POST['fecha'];
                         $cotizacion->cliente = new \Models\Persona($_POST['cliente']);
-                        $cotizacion->notas = $_POST["notas"];
+                        $cotizacion->notas = $_POST['notas'];
                         $cotizacion->precio_total = $_POST["precio_total"];
 
                         $respuesta = $cotizacion->crear();

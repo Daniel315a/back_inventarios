@@ -4,6 +4,7 @@
     {
     
         public $id;
+        public $fecha;
         public $cliente;
         public $notas;
         public $precio_total;
@@ -31,6 +32,7 @@
             if($conexion->getCantidadRegistros() > 0)
             {
                 $this->cliente = new \Models\Persona($datos[0]->cliente);
+                $this->fecha = $datos[0]->fecha;
                 $this->notas = $datos[0]->notas;
                 $this->precio_total = $datos[0]->precio_total;
                 $this->detalles = (new \Models\DetalleCotizacion())->consultarPorCotizacion($this->id);
@@ -53,8 +55,11 @@
                 $empresa = $idEmpresa;
             }
 
-            $sql = "SELECT cotizaciones.id, personas.numero_documento, 
-                personas.nombres, personas.apellidos
+            $sql = "SELECT 
+                        cotizaciones.id, 
+                        personas.numero_documento, 
+                        personas.nombres, 
+                        personas.apellidos
             FROM cotizaciones 
                 LEFT JOIN personas
                     ON personas.id = cotizaciones.cliente
@@ -79,12 +84,16 @@
         function crear(){
             
             $sql = "INSERT INTO cotizaciones(
+                fecha,
                 cliente,
                 notas,
                 precio_total
-            ) VALUES({$this->cliente->id},
-            '{$this->notas}',
-            {$this->precio_total})";
+            ) VALUES (
+                '{$this->fecha}',
+                {$this->cliente->id},
+                '{$this->notas}',
+                {$this->precio_total}
+            )";
 
             $this->conexion->execCommand($sql);
 
@@ -93,7 +102,8 @@
 
         function actualizar(){
             $sql = "UPDATE cotizaciones
-                    SET cliente = {$this->cliente->id},
+                    SET 
+                        cliente = {$this->cliente->id},
                         notas = '{$this->notas}',
                         precio_total = {$this->precio_total}
                     WHERE id = {$this->id};";

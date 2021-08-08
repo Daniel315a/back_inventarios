@@ -145,7 +145,7 @@
             VALUES
             (
                 {$this->consecutivo},
-                {$this->fecha},
+                '{$this->fecha}',
                 {$this->cliente->id},
                 {$this->vendedor->id},
                 {$this->usuario->id},
