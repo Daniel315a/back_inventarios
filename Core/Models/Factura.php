@@ -78,6 +78,7 @@
                         facturas.id,
                         consecutivo,
                         fecha,
+                        CONCAT(vendedor.nombres, ' ', vendedor.apellidos) AS nombre_completo_vendedor,
                         CASE
                             WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
                             ELSE personas.razon_social
@@ -86,6 +87,8 @@
                     FROM facturas
                         LEFT JOIN personas
                             ON facturas.cliente = personas.id
+                        LEFT JOIN personas AS vendedor
+                            ON facturas.vendedor = vendedor.id
                     WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id};";
 
             $datos = $this->conexion->getData($sql);
