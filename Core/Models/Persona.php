@@ -176,7 +176,6 @@
             return $respuesta;
         }
 
-        
         public function consultarPorTipoEmpleado($empresa)
         {
             $sql = "SELECT * 
@@ -222,7 +221,6 @@
             return $respuesta;
         }
 
-        
         function crear(){
             
             $sql = "INSERT INTO personas(
