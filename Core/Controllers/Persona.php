@@ -116,12 +116,8 @@
                         'tipo_documento', 'numero_documento', 'nombres']);
                     
                     if($parametrosOk === true){
-                        $persona->id = $_POST['id'];
-                        $persona->municipio = new \Models\Municipio($_POST['municipio']);
-                        $persona->tipo = new \Models\TipoPersona($_POST['tipo']);
-                        $persona->empresa = new \Models\Empresa($_POST['empresa']);
-                        $persona->tipo_documento = new \Models\TipoDocumento($_POST['tipo_documento']);
-
+                        $persona = new \Models\Persona($_POST['id']);
+                        
                         if(isset($_POST['numero_documento'])){
                             $persona->numero_documento = $_POST['numero_documento'];
                         }
