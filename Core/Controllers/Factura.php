@@ -50,11 +50,13 @@
                 {
                     $parametrosOk = \variablesEnArreglo($_POST, [
                         'id_cliente',
-                        'id_vendedor'
+                        'id_vendedor',
+                        'fecha'
                     ]);
 
                     if($parametrosOk)
                     {
+                        $factura->fecha = $_POST['fecha'];
                         $factura->cliente = new \Models\Persona($_POST['id_cliente']);
                         $factura->vendedor = new \Models\Persona($_POST['id_vendedor']);
                         $factura->usuario = $GLOBALS['usuario'];

@@ -5,6 +5,7 @@
         
         public $id;
         public $consecutivo;
+        public $factura;
         public $cliente;
         public $vendedor;
         public $usuario;
@@ -45,6 +46,7 @@
             {
                 $this->id = $datos[0]->id;
                 $this->consecutivo = $datos[0]->consecutivo;
+                $this->factura = $datos[0]->factura;
                 $this->cliente = new Persona($datos[0]->cliente);
                 $this->vendedor = new Persona($datos[0]->vendedor);
                 $this->usuario = $GLOBALS['usuario'];
@@ -75,6 +77,7 @@
             $sql = "SELECT
                         facturas.id,
                         consecutivo,
+                        fecha,
                         CASE
                             WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
                             ELSE personas.razon_social
@@ -130,6 +133,7 @@
             $sql = "INSERT INTO decora_transforma.facturas
             (
                 consecutivo,
+                fecha,
                 cliente,
                 vendedor,
                 usuario,
@@ -141,6 +145,7 @@
             VALUES
             (
                 {$this->consecutivo},
+                {$this->fecha},
                 {$this->cliente->id},
                 {$this->vendedor->id},
                 {$this->usuario->id},
