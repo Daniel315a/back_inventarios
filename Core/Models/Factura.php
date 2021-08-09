@@ -91,7 +91,7 @@
                             ON facturas.cliente = personas.id
                         LEFT JOIN personas AS vendedor
                             ON facturas.vendedor = vendedor.id
-                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id};";
+                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id} AND anulada = 0;";
 
             $datos = $this->conexion->getData($sql);
 
