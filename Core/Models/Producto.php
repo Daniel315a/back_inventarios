@@ -123,7 +123,11 @@
 
         public function consultarPorEmpresa()
         {
-            $sql = "SELECT id, referencia, detalle 
+            $sql = "SELECT
+                            id, 
+                            referencia, 
+                            detalle,
+                            precio
                     FROM productos 
                     WHERE empresa = {$this->empresa->id} AND habilitado = true;";
 
