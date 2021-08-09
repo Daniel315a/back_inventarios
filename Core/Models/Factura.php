@@ -5,7 +5,7 @@
         
         public $id;
         public $consecutivo;
-        public $factura;
+        public $fecha;
         public $cliente;
         public $vendedor;
         public $usuario;
@@ -13,6 +13,7 @@
         public $porcentaje_comision;
         public $valor_comision;
         public $total_descuento;
+        public $total_iva;
         public $detalles;
         public $anulada;
 
@@ -46,7 +47,7 @@
             {
                 $this->id = $datos[0]->id;
                 $this->consecutivo = $datos[0]->consecutivo;
-                $this->factura = $datos[0]->factura;
+                $this->fecha = $datos[0]->fecha;
                 $this->cliente = new Persona($datos[0]->cliente);
                 $this->vendedor = new Persona($datos[0]->vendedor);
                 $this->usuario = $GLOBALS['usuario'];
@@ -54,8 +55,9 @@
                 $this->porcentaje_comision = $datos[0]->porcentaje_comision;
                 $this->valor_comision = $datos[0]->valor_comision;
                 $this->total_descuento = $datos[0]->total_descuento;
+                $this->total_iva = $datos[0]->total_iva;
                 $this->anulada = $datos[0]->anulada;
-
+                
                 $respuesta_detalles = DetalleFactura::consultarDeFactura($this->id);
                 
                 if($respuesta_detalles->resultado)
@@ -143,7 +145,8 @@
                 valor_total,
                 porcentaje_comision,
                 valor_comision,
-                total_descuento
+                total_descuento,
+                total_iva
             )
             VALUES
             (
@@ -155,7 +158,8 @@
                 {$this->valor_total},
                 {$this->porcentaje_comision},
                 {$this->valor_comision},
-                {$this->total_descuento}
+                {$this->total_descuento},
+                {$this->total_iva}
             );";
 
             $this->conexion->execCommand($sql);

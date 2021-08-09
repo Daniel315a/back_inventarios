@@ -64,6 +64,7 @@
                         $factura->porcentaje_comision = isset($_POST['porcentaje_comision']) ? $_POST['porcentaje_comision'] : 0;
                         $factura->valor_comision = isset($_POST['valor_comision']) ? $_POST['valor_comision'] : 0;
                         $factura->total_descuento = isset($_POST['total_descuento']) ? $_POST['total_descuento'] : 0;
+                        $factura->total_iva = isset($_POST['total_iva']) ? $_POST['total_iva'] : 0;
 
                         $respuesta = $factura->crear($_POST['detalles']);
                     }

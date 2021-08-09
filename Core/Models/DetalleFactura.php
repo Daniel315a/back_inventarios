@@ -9,6 +9,8 @@
         public $precio;
         public $porcentaje_descuento;
         public $valor_descuento;
+        public $porcentaje_iva;
+        public $valor_iva;
         public $es_instalacion;
 
         function __construct()
@@ -29,6 +31,8 @@
                         descripcion,
                         porcentaje_descuento,
                         valor_descuento,
+                        porcentaje_iva,
+                        valor_iva,
                         precio_unitario,
                         precio_total,
                         es_instalacion
@@ -65,6 +69,8 @@
                 	    descripcion,
                 	    porcentaje_descuento,
                 	    valor_descuento,
+                        porcentaje_iva,
+                        valor_iva,
                 	    precio_unitario,
                 	    precio_total,
                 	    es_instalacion
@@ -79,6 +85,8 @@
                             '{$detalles[0]->descripcion}',
                             {$detalles[0]->porcentaje_descuento},
                             {$detalles[0]->valor_descuento},
+                            {$detalles[0]->porcentaje_iva},
+                            {$detalles[0]->valor_iva},
                             {$detalles[0]->precio_unitario},
                             {$detalles[0]->precio_total},
                             {$detalles[0]->es_instalacion}

@@ -15,12 +15,12 @@ VALUES
     (SELECT id FROM empresas WHERE nombre = 'Decora y transforma')
 );
 
-INSERT INTO tipos_persona (nombre, es_empleado)
+INSERT INTO tipos_persona (id, nombre, es_empleado)
 VALUES
-('Cliente', false),
-('Vendedor', true),
-('Instalador', true),
-('Distribuidor', false);
+(1, 'Cliente', false),
+(2, 'Vendedor', true),
+(3, 'Instalador', true),
+(4, 'Distribuidor', false);
 
 INSERT INTO tipos_documento (nombre)
 VALUES
