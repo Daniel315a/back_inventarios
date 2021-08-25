@@ -58,8 +58,10 @@
             $sql = "SELECT 
                         cotizaciones.id, 
                         personas.numero_documento, 
-                        personas.nombres, 
-                        personas.apellidos
+                        (CASE 
+                            WHEN personas.razon_social IS NULL THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                            ELSE personas.razon_social
+                        END) AS nombre
             FROM cotizaciones 
                 LEFT JOIN personas
                     ON personas.id = cotizaciones.cliente
