@@ -20,9 +20,6 @@
             {
                 if(is_numeric(func_get_arg(0)))
                 {
-                    $this->unidad_medida = new \stdClass();
-                    $this->unidad_medida->id = 1;
-
                     $this->id = func_get_arg(0);
                     $this->consultarPorId();                    
                 }                
@@ -35,6 +32,9 @@
 
         public function crear()
         {
+            $this->unidad_medida = new \stdClass();
+            $this->unidad_medida->id = 1;
+
             $sql = "INSERT INTO productos
             (
                 empresa,
