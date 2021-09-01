@@ -11,6 +11,7 @@
         public $cantidad_disponible;
         public $precio;
         public $habilitado;
+        public $unidad_medida;
 
         function __construct()
         {
@@ -19,6 +20,9 @@
             {
                 if(is_numeric(func_get_arg(0)))
                 {
+                    $this->unidad_medida = new \stdClass();
+                    $this->unidad_medida->id = 1;
+
                     $this->id = func_get_arg(0);
                     $this->consultarPorId();                    
                 }                
@@ -34,15 +38,17 @@
             $sql = "INSERT INTO productos
             (
                 empresa,
+                unidad_medida,
                 referencia,
                 detalle,
                 cantidad_interna,
                 cantidad_disponible,
-                precio
+                precio                
             )
             VALUES
             (
                 {$this->empresa->id},
+                {$this->unidad_medida->id},
                 '{$this->referencia}',
                 '{$this->detalle}',
                 {$this->cantidad_interna},
