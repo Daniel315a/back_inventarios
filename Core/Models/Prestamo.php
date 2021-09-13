@@ -56,12 +56,19 @@
                 $empresa = $idEmpresa;
             }
 
-            $sql = "SELECT prestamos.id, personas.numero_documento, 
-                personas.nombres, personas.apellidos, prestamos.fecha_prestamo, prestamos.fecha_devolucion
-            FROM prestamos 
-                LEFT JOIN personas
-                    ON personas.id = prestamos.distribuidor
-            WHERE empresa = {$empresa};";
+            $sql = "SELECT 
+                        prestamos.id, 
+                        personas.numero_documento, 
+                        (CASE 
+                            WHEN personas.razon_social IS NULL THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                            ELSE personas.razon_social
+                        END) AS nombre,
+                        prestamos.fecha_prestamo,
+                        prestamos.fecha_devolucion
+                    FROM prestamos 
+                        LEFT JOIN personas
+                            ON personas.id = prestamos.distribuidor
+                    WHERE empresa = {$empresa};";
             
 
             $conexion = new \Conexion();
