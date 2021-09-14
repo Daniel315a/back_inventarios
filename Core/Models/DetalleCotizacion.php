@@ -8,6 +8,9 @@
         public $producto;
         public $cantidad;
         public $descripcion;
+        public $precio_unitario;
+        public $porcentaje_iva;
+        public $valor_iva;
         public $precio_total;
 
         function __construct(){
@@ -69,17 +72,31 @@
 
         function crear(){
             
+            $this->precio_total = $this->precio_unitario * $this->cantidad;
+            $this->valor_iva = round($this->precio_total * ($this->porcentaje_iva / 100), 2);
+            $this->precio_total += $this->valor_iva;
+
             $sql = "INSERT INTO detalles_cotizacion(
-                cotizacion,
-                producto,
-                cantidad,
-                descripcion,
-                precio_total
-            ) VALUES({$this->cotizacion},
-            {$this->producto},
-            {$this->cantidad},
-            '{$this->descripcion}',
-            {$this->precio_total})";
+                        cotizacion,
+                        producto,
+                        cantidad,
+                        descripcion,
+                        precio_unitario,
+                        porcentaje_iva,
+                        valor_iva,
+                        precio_total
+                    ) 
+                    VALUES
+                    (
+                        {$this->cotizacion},
+                        {$this->producto},
+                        {$this->cantidad},
+                        '{$this->descripcion}',
+                        {$this->precio_unitario},
+                        {$this->porcentaje_iva},
+                        {$this->valor_iva},
+                        {$this->precio_total}
+                    )";
 
             $this->conexion->execCommand($sql);
 

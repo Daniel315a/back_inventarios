@@ -7,9 +7,12 @@
         public $fecha;
         public $cliente;
         public $notas;
+        public $detalles;
         public $precio_total;
+        public $total_iva;
 
-        function __construct(){
+        function __construct()
+        {
             parent::__construct();
             if(func_num_args() > 0)
             {   
@@ -56,16 +59,16 @@
             }
 
             $sql = "SELECT 
-                        cotizaciones.id, 
-                        personas.numero_documento, 
-                        (CASE 
-                            WHEN personas.razon_social IS NULL THEN CONCAT(personas.nombres, ' ', personas.apellidos)
-                            ELSE personas.razon_social
-                        END) AS nombre
-            FROM cotizaciones 
-                LEFT JOIN personas
-                    ON personas.id = cotizaciones.cliente
-            WHERE empresa = {$empresa};";
+                                cotizaciones.id, 
+                                personas.numero_documento, 
+                                (CASE 
+                                    WHEN personas.razon_social IS NULL THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                                    ELSE personas.razon_social
+                                END) AS nombre
+                    FROM cotizaciones 
+                        LEFT JOIN personas
+                            ON personas.id = cotizaciones.cliente
+                    WHERE empresa = {$empresa};";
             
 
             $conexion = new \Conexion();
@@ -83,31 +86,42 @@
             return $respuesta;
         }
 
-        function crear(){
-            
-            $sql = "INSERT INTO cotizaciones(
-                fecha,
-                cliente,
-                notas,
-                precio_total
-            ) VALUES (
-                '{$this->fecha}',
-                {$this->cliente->id},
-                '{$this->notas}',
-                {$this->precio_total}
-            )";
+        function crear()
+        {
+            $this->precio_total += $this->total_iva;
+
+            $sql = "INSERT INTO cotizaciones
+                    (
+                        fecha,
+                        cliente,
+                        notas,
+                        precio_total,
+                        total_iva
+                    )
+                    VALUES
+                    (
+                        '{$this->fecha}',
+                        {$this->cliente->id},
+                        '{$this->notas}',
+                        {$this->precio_total},
+                        {$this->total_iva}
+                    )";
 
             $this->conexion->execCommand($sql);
 
             return $this->obtenerRespuesta($this, true, false);
         }
 
-        function actualizar(){
+        function actualizar()
+        {
+            $this->precio_total += $this->total_iva;
+
             $sql = "UPDATE cotizaciones
                     SET 
                         cliente = {$this->cliente->id},
                         notas = '{$this->notas}',
-                        precio_total = {$this->precio_total}
+                        precio_total = {$this->precio_total},
+                        total_iva = {$this->total_iva}
                     WHERE id = {$this->id};";
 
             $this->conexion->execCommand($sql);
@@ -115,7 +129,8 @@
             return $this->obtenerRespuesta($this, false, true);
         }
 
-        function eliminar(){
+        function eliminar()
+        {
             $sql = "DELETE FROM cotizaciones WHERE id = {$this->id};";
     
             $this->conexion->execCommand($sql);
