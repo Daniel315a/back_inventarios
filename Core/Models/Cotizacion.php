@@ -38,6 +38,7 @@
                 $this->fecha = $datos[0]->fecha;
                 $this->notas = $datos[0]->notas;
                 $this->precio_total = $datos[0]->precio_total;
+                $this->total_iva = $datos[0]->total_iva;
                 $this->detalles = (new \Models\DetalleCotizacion())->consultarPorCotizacion($this->id);
 
                 $respuesta = new \Respuesta([

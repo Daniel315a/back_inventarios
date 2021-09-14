@@ -53,8 +53,8 @@
         public function consultarPorCotizacion($idCotizacion)
         {
             $sql = "SELECT *
-            FROM detalles_cotizacion 
-            WHERE cotizacion = {$idCotizacion};";
+                    FROM detalles_cotizacion 
+                    WHERE cotizacion = {$idCotizacion};";
             
 
             $conexion = new \Conexion();
