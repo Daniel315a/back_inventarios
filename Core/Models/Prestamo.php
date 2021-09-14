@@ -8,6 +8,7 @@
         public $empleado;
         public $fecha_prestamo;
         public $fecha_devolucion;
+        public $notas;
         public $detalles;
 
         function __construct(){
@@ -36,6 +37,7 @@
                 $this->empleado = new \Models\Persona($datos[0]->empleado);
                 $this->fecha_prestamo = $datos[0]->fecha_prestamo;
                 $this->fecha_devolucion = $datos[0]->fecha_devolucion;
+                $this->notas = $datos[0]->notas;
                 $this->detalles = (new \Models\DetallePrestamo())->consultarPorPrestamo($this->id);
 
                 $respuesta = new \Respuesta([
@@ -89,14 +91,20 @@
         function crear(){
             
             $sql = "INSERT INTO prestamos(
-                distribuidor,
-                empleado,
-                fecha_prestamo,
-                fecha_devolucion
-            ) VALUES({$this->distribuidor->id},
-            {$this->empleado->id},
-            ". ModelosUtil::verificarNull($this->fecha_prestamo, false).",
-            ". ModelosUtil::verificarNull($this->fecha_devolucion, false).")";
+                        distribuidor,
+                        empleado,
+                        fecha_prestamo,
+                        fecha_devolucion,
+                        notas
+                    )
+                    VALUES
+                    (
+                        {$this->distribuidor->id},
+                        {$this->empleado->id},
+                        ". ModelosUtil::verificarNull($this->fecha_prestamo, false).",
+                        ". ModelosUtil::verificarNull($this->fecha_devolucion, false).",
+                        {$this->notas}
+                    )";
 
             $this->conexion->execCommand($sql);
 
