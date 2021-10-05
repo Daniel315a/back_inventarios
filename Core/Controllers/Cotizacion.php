@@ -59,6 +59,7 @@
                         $cotizacion->cliente = new \Models\Persona($_POST['cliente']);
                         $cotizacion->notas = $_POST['notas'];
                         $cotizacion->precio_total = $_POST["precio_total"];
+                        $cotizacion->total_iva = $_POST['total_iva'];
 
                         $respuesta = $cotizacion->crear();
 
@@ -69,11 +70,14 @@
 
                                 foreach ($detalles as $i => $detalle) {
                                     $detalleNuevo = new \Models\DetalleCotizacion();
-                                    /*No se crean los objetos porque no retorna el json correctamente. */
+                                    /* No se crean los objetos porque no retorna el json correctamente. */
                                     $detalleNuevo->cotizacion = $cotizacion->id;
                                     $detalleNuevo->producto = $detalle->producto;
                                     $detalleNuevo->cantidad = $detalle->cantidad;
                                     $detalleNuevo->descripcion = $detalle->descripcion;
+                                    $detalleNuevo->precio_unitario = $detalle->precio_unitario;
+                                    $detalleNuevo->porcentaje_iva = $detalle->porcentaje_iva;
+                                    $detalleNuevo->valor_iva = $detalle->valor_iva;
                                     $detalleNuevo->precio_total = $detalle->precio_total;
 
                                     $detalleNuevo->crear();

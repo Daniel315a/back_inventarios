@@ -114,7 +114,7 @@
                     $persona->tipo = new \Models\TipoPersona($datos[$i]->tipo);
                     $persona->empresa = new \Models\Empresa($datos[$i]->empresa);
                     $persona->tipo_documento = new \Models\TipoDocumento($datos[$i]->tipo_documento);
-                    $persona->numero_documento = $datos[0]->numero_documento;
+                    $persona->numero_documento = $datos[$i]->numero_documento;
                     $persona->nombres = $datos[$i]->nombres;
                     $persona->apellidos = $datos[$i]->apellidos;
                     $persona->razon_social = $datos[$i]->razon_social;
