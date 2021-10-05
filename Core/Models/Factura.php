@@ -91,7 +91,8 @@
                             ON facturas.cliente = personas.id
                         LEFT JOIN personas AS vendedor
                             ON facturas.vendedor = vendedor.id
-                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id} AND anulada = 0;";
+                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id} AND anulada = 0
+                    ORDER BY fecha, consecutivo ASC;";
 
             $datos = $this->conexion->getData($sql);
 
