@@ -62,7 +62,7 @@
                         prestamos.id, 
                         personas.numero_documento, 
                         (CASE 
-                            WHEN personas.razon_social IS NULL THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                            WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN  CONCAT(personas.nombres, ' ', personas.apellidos)
                             ELSE personas.razon_social
                         END) AS nombre,
                         prestamos.fecha_prestamo,
