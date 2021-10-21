@@ -88,9 +88,9 @@
             return $respuesta;
         }
 
-        function crear(){
-            
-            $sql = "INSERT INTO prestamos(
+        function crear($str_detalles){
+            $sql = "INSERT INTO prestamos
+                    (
                         distribuidor,
                         empleado,
                         fecha_prestamo,
@@ -103,12 +103,29 @@
                         {$this->empleado->id},
                         ". ModelosUtil::verificarNull($this->fecha_prestamo, false).",
                         ". ModelosUtil::verificarNull($this->fecha_devolucion, false).",
-                        {$this->notas}
+                        ". ModelosUtil::verificarNull($this->notas, false) ."
                     )";
 
             $this->conexion->execCommand($sql);
 
-            return $this->obtenerRespuesta($this, true, false);
+            $respuesta = $this->obtenerRespuesta($this, true, false);
+
+            if($respuesta->resultado){
+
+                $prestamo->detalles = \json_decode($_POST['detalles']);
+
+                foreach ($prestamo->detalles as $detalle) {
+                    $detalleNuevo = new \Models\DetallePrestamo();
+                    $detalleNuevo->prestamo = $this->id;
+                    $detalleNuevo->producto = $detalle->producto;
+                    $detalleNuevo->cantidad = $detalle->cantidad;
+
+                    $respuesta &= $detalleNuevo->crear();
+                }
+
+            }
+
+            return $respuesta;
         }
 
         function eliminar(){

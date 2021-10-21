@@ -46,39 +46,22 @@
                 $solicitud = $_POST['solicitud'];
     
                 if($solicitud == 'crear'){
-                    $parametrosOk = \variablesEnArreglo($_POST, ['distribuidor', 'fecha_prestamo']);
+                    $parametrosOk = \variablesEnArreglo($_POST, ['distribuidor', 'fecha_prestamo', 'detalles']);
                     
                     if($parametrosOk === true){
                         $prestamo->distribuidor = new \Models\Persona($_POST['distribuidor']);
-                        $prestamo->fecha_prestamo = $_POST["fecha_prestamo"];
+                        $prestamo->fecha_prestamo = $_POST['fecha_prestamo'];
+                        $prestamo->notas = isset($_POST['notas']) ? $_POST['notas'] : null;
 
                         if(isset($_POST['empleado'])){
                             $prestamo->empleado = new \Models\Persona($_POST['empleado']);
                         }
     
                         if(isset($_POST['fecha_devolucion'])){
-                            $prestamo->empleado = $_POST["fecha_devolucion"];
+                            $prestamo->empleado = $_POST['fecha_devolucion'];
                         }
         
-                        $respuesta = $prestamo->crear();
-
-                        if($respuesta->resultado){
-                            if(isset($_POST['detalles'])){
-                                $prestamo->detalles = array();
-                                $detalles = \json_decode($_POST['detalles']);
-
-                                foreach ($detalles as $i => $detalle) {
-                                    $detalleNuevo = new \Models\DetallePrestamo();
-                                    /*No se crean los objetos porque no retorna el json correctamente. */
-                                    $detalleNuevo->prestamo = $prestamo->id;
-                                    $detalleNuevo->producto = $detalle->producto;
-                                    $detalleNuevo->cantidad = $detalle->cantidad;
-
-                                    $detalleNuevo->crear();
-                                    array_push($prestamo->detalles, $detalleNuevo);
-                                }
-                            }
-                        }
+                        $respuesta = $prestamo->crear($_POST['detalles']);
                     }
                 }
                 /*
@@ -144,7 +127,7 @@
 
                             $respuesta = $prestamo->eliminar();
                         }else{
-                            $respuesta = \Respuesta::obtener(false, "No puede eliminar un prestamo entregado", null);
+                            $respuesta = \Respuesta::obtener(false, 'No puede eliminar un prestamo entregado', null);
                         }
 
                         

@@ -65,13 +65,18 @@
 
         function crear(){
             
-            $sql = "INSERT INTO detalles_prestamo(
-                producto,
-                prestamo,
-                cantidad
-            ) VALUES({$this->producto},
-            {$this->prestamo},
-            {$this->cantidad})";
+            $sql = "INSERT INTO detalles_prestamo
+                    (
+                        producto,
+                        prestamo,
+                        cantidad
+                    ) 
+                    VALUES
+                    (
+                        {$this->producto->id},
+                        {$this->prestamo},
+                        {$this->cantidad}
+                    );";
 
             $this->conexion->execCommand($sql);
 

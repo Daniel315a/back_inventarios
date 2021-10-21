@@ -81,15 +81,15 @@
                 $sql .= "(
                             {$detalles[$i]->producto->id},
                             {$id_factura},
-                            {$detalles[0]->cantidad},
-                            '{$detalles[0]->descripcion}',
-                            {$detalles[0]->porcentaje_descuento},
-                            {$detalles[0]->valor_descuento},
-                            {$detalles[0]->porcentaje_iva},
-                            {$detalles[0]->valor_iva},
-                            {$detalles[0]->precio_unitario},
-                            {$detalles[0]->precio_total},
-                            {$detalles[0]->es_instalacion}
+                            {$detalles[$i]->cantidad},
+                            '{$detalles[$i]->descripcion}',
+                            {$detalles[$i]->porcentaje_descuento},
+                            {$detalles[$i]->valor_descuento},
+                            {$detalles[$i]->porcentaje_iva},
+                            {$detalles[$i]->valor_iva},
+                            {$detalles[$i]->precio_unitario},
+                            {$detalles[$i]->precio_total},
+                            {$detalles[$i]->es_instalacion}
                         )";
 
                 if($i < \count($detalles) - 1)
