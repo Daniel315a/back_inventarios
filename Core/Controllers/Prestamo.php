@@ -37,84 +37,60 @@
             \responder($respuesta, $parametrosOk);
         }
 
-        public static function post(){
+        public static function post()
+        {
             $prestamo = new \Models\Prestamo();
             $respuesta = \Respuesta::obtenerDefault();
             $parametrosOk = true;
     
-            if(isset($_POST['solicitud'])){
+            if(isset($_POST['solicitud']))
+            {
                 $solicitud = $_POST['solicitud'];
     
-                if($solicitud == 'crear'){
+                if($solicitud == 'crear')
+                {
                     $parametrosOk = \variablesEnArreglo($_POST, ['distribuidor', 'fecha_prestamo', 'detalles']);
                     
-                    if($parametrosOk === true){
+                    if($parametrosOk === true)
+                    {
                         $prestamo->distribuidor = new \Models\Persona($_POST['distribuidor']);
                         $prestamo->fecha_prestamo = $_POST['fecha_prestamo'];
                         $prestamo->notas = isset($_POST['notas']) ? $_POST['notas'] : null;
 
-                        if(isset($_POST['empleado'])){
+                        if(isset($_POST['empleado']))
+                        {
                             $prestamo->empleado = new \Models\Persona($_POST['empleado']);
                         }
     
-                        if(isset($_POST['fecha_devolucion'])){
+                        if(isset($_POST['fecha_devolucion']))
+                        {
                             $prestamo->empleado = $_POST['fecha_devolucion'];
                         }
         
                         $respuesta = $prestamo->crear($_POST['detalles']);
                     }
                 }
-                /*
-                if($solicitud == 'actualizar'){
-                    $parametrosOk = \variablesEnArreglo($_POST, ['id', 'municipio', 'tipo', 'empresa', 
-                        'tipo_documento', 'numero_documento', 'nombres']);
-                    
-                    if($parametrosOk === true){
-                        $persona->id = $_POST['id'];
-                        $persona->municipio = new \Models\Municipio($_POST['municipio']);
-                        $persona->tipo = new \Models\TipoPersona($_POST['tipo']);
-                        $persona->empresa = new \Models\Empresa($_POST['empresa']);
-                        $persona->tipo_documento = new \Models\TipoDocumento($_POST['tipo_documento']);
 
-                        if(isset($_POST['numero_documento'])){
-                            $persona->numero_documento = $_POST['numero_documento'];
-                        }
-    
-                        if(isset($_POST['nombres'])){
-                            $persona->nombres = $_POST['nombres'];
-                        }
-    
+                if($solicitud == 'actualizar')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, ['id']);
 
-                        if(isset($_POST['apellidos'])){
-                            $persona->apellidos = $_POST['apellidos'];
-                        }
-    
-                        if(isset($_POST['razon_social'])){
-                            $persona->razon_social = $_POST['razon_social'];
-                        }
-    
-                        if(isset($_POST['direccion'])){
-                            $persona->direccion = $_POST['direccion'];
-                        }
-    
-                        if(isset($_POST['telefono'])){
-                            $persona->telefono = $_POST['telefono'];
-                        }
-    
-                        if(isset($_POST['email'])){
-                            $persona->email = $_POST['email'];
-                        }
-    
-                        if(isset($_POST['habilitada'])){
-                            $persona->habilitada = $_POST['habilitada'];
-                        }
-        
-                        $respuesta = $persona->actualizar();
+                    if($parametrosOk)
+                    {
+                        $prestamo = new \Models\Prestamo($_POST['id']);
 
+                        $prestamo->distribuidor = isset($_POST['id_distribuidor']) ? new \Models\Persona($_POST['id_distribuidor']) : $prestamo->distribuidor;
+                        $prestamo->empleado = isset($_POST['id_empleado']) ? new \Models\Persona($_POST['id_empleado']) : $prestamo->empleado;
+                        $prestamo->fecha_devolucion = isset($_POST['fecha_devolucion']) ? $_POST['fecha_devolucion'] : $prestamo->fecha_devolucion;
+                        $prestamo->notas = isset($_POST['notas']) ? $_POST['notas'] : $prestamo->notas;
+
+                        $respuesta = $prestamo->actualizar();
                     }
+                    
                 }
-                */
-                if($solicitud == 'eliminar'){
+
+                if($solicitud == 'eliminar')
+                {
                     $parametrosOk = \variablesEnArreglo($_POST, ['id']);
     
                     if($parametrosOk === true){
@@ -135,10 +111,12 @@
     
                 }
 
-                if($solicitud == 'eliminar_detalle'){
+                if($solicitud == 'eliminar_detalle')
+                {
                     $parametrosOk = \variablesEnArreglo($_POST, ['id']);
     
-                    if($parametrosOk === true){
+                    if($parametrosOk === true)
+                    {
                         $detalle = new \Models\DetallePrestamo($_POST['id']);
 
                         $respuesta = $detalle->eliminar();
@@ -146,10 +124,12 @@
     
                 }
                 
-                if($solicitud == 'eliminar_detalles'){
+                if($solicitud == 'eliminar_detalles')
+                {
                     $parametrosOk = \variablesEnArreglo($_POST, ['id']);
     
-                    if($parametrosOk === true){
+                    if($parametrosOk === true)
+                    {
                         $detalle = new \Models\DetallePrestamo();
 
                         $respuesta = $detalle->eliminarPorPrestamo($_POST['id']);
