@@ -112,15 +112,23 @@
 
             if($respuesta->resultado){
 
-                $prestamo->detalles = \json_decode($_POST['detalles']);
+                $detalles = \json_decode($str_detalles);
+                $this->detalles = array();
 
-                foreach ($prestamo->detalles as $detalle) {
+                foreach ($detalles as $detalle) {
                     $detalleNuevo = new \Models\DetallePrestamo();
                     $detalleNuevo->prestamo = $this->id;
                     $detalleNuevo->producto = $detalle->producto;
                     $detalleNuevo->cantidad = $detalle->cantidad;
 
-                    $respuesta &= $detalleNuevo->crear();
+                    $respuestaDetalle = $detalleNuevo->crear();
+
+                    if($respuestaDetalle->resultado == true)
+                    {
+                        array_push($this->detalles, $respuestaDetalle->datos);
+                    }
+
+                    $respuesta->resultado &= $respuestaDetalle->resultado;
                 }
 
             }
