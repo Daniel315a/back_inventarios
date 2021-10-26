@@ -46,21 +46,26 @@
         public function consultarPorPrestamo($idPrestamo)
         {
             $sql = "SELECT *
-            FROM detalles_prestamo 
-            WHERE prestamo = {$idPrestamo};";
-            
+                        FROM detalles_prestamo 
+                    WHERE prestamo = {$idPrestamo};";
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
             $respuesta = \Respuesta::obtenerDefault();
-            $listaDetalles = array();
-
+            
             if($conexion->getCantidadRegistros() > 0)
             {
-                $listaDetalles = $datos;
+                foreach ($datos as $detalle) {
+                    $detalle->producto = new Producto($detalle->producto);
+                }
+
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $datos 
+                ]);
             }
 
-            return $listaDetalles;
+            return $respuesta;
         }
 
         function crear(){

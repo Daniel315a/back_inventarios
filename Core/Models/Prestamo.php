@@ -38,7 +38,12 @@
                 $this->fecha_prestamo = $datos[0]->fecha_prestamo;
                 $this->fecha_devolucion = $datos[0]->fecha_devolucion;
                 $this->notas = $datos[0]->notas;
-                $this->detalles = (new \Models\DetallePrestamo())->consultarPorPrestamo($this->id);
+                $respuestaDetalles = (new \Models\DetallePrestamo())->consultarPorPrestamo($this->id);
+
+                if($respuestaDetalles->resultado)
+                {
+                    $this->detalles = $respuestaDetalles->datos;                    
+                }
 
                 $respuesta = new \Respuesta([
                     'resultado' => true,
