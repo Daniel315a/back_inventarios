@@ -155,7 +155,7 @@
                     SET
                         distribuidor = " . ModelosUtil::verificarNull($this->distribuidor->id, true) . ",
                         empleado = " . ModelosUtil::verificarNull($this->empleado->id, true) . ",
-                        fecha_devolucion = " . ModelosUtil::verificarNull($this->fecha_devolucion, true) . ",
+                        fecha_devolucion = '" . ModelosUtil::verificarNull($this->fecha_devolucion, true) . "',
                         notas = " . ModelosUtil::verificarNull($this->notas, false) . "
                     WHERE id = {$this->id};";
 

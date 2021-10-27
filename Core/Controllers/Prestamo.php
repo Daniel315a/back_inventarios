@@ -71,6 +71,26 @@
                     }
                 }
 
+                if($solicitud == 'crear_detalle')
+                {
+                    $parametrosOk = \variablesEnArreglo($_POST, [
+                        'id_prestamo',
+                        'id_producto',
+                        'cantidad'
+                    ]);
+
+                    if($parametrosOk)
+                    {
+                        $detalle_prestamo = new \Models\DetallePrestamo();
+
+                        $detalle_prestamo->producto = new \Models\Producto($_POST['id_producto']);
+                        $detalle_prestamo->prestamo = $_POST['id_prestamo'];
+                        $detalle_prestamo->cantidad = $_POST['cantidad'];
+
+                        $respuesta = $detalle_prestamo->crear();
+                    }
+                }
+
                 if($solicitud == 'actualizar')
                 {
                     $parametrosOk = \variablesEnArreglo($_POST, ['id']);
