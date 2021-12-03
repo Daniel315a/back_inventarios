@@ -42,7 +42,7 @@
                     
                     if($parametrosOk)
                     {
-                        $respuesta = $factura->consultarConFiltro($_GET['fecha_inicial'], $_GET['fecha_final'], $_GET['texto']);
+                        $respuesta = $factura->consultarCsvConFiltro($_GET['fecha_inicial'], $_GET['fecha_final'], $_GET['texto']);
                     }
                 }
             }

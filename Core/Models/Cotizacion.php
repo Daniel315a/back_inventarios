@@ -87,7 +87,7 @@
             return $respuesta;
         }
 
-        function crear()
+        public function crear()
         {
             $this->precio_total += $this->total_iva;
 
@@ -113,7 +113,7 @@
             return $this->obtenerRespuesta($this, true, false);
         }
 
-        function actualizar()
+        public function actualizar()
         {
             $this->precio_total += $this->total_iva;
 
@@ -130,13 +130,64 @@
             return $this->obtenerRespuesta($this, false, true);
         }
 
-        function eliminar()
+        public function eliminar()
         {
             $sql = "DELETE FROM cotizaciones WHERE id = {$this->id};";
     
             $this->conexion->execCommand($sql);
     
             return $this->obtenerRespuesta($this, false, true);
+        }
+
+        public function consultarCsvConFiltro($texto){
+            $sql = "SELECT fecha,
+                            cliente.nombres,
+                            cliente.apellidos,
+                            cliente.razon_social,
+                            notas,
+                            precio_total,
+                            total_iva
+                    FROM cotizaciones
+                        LEFT JOIN personas AS cliente
+                            ON cliente.id = cotizaciones.cliente
+                    WHERE CONCAT(cliente.nombres, ' ', cliente.apellidos) LIKE '%{$texto}%' OR
+                            cliente.razon_social LIKE '%{$texto}%'
+                    ORDER BY fecha ASC;";
+            
+            $resultado = $this->conexion->getData($sql);
+            $respuesta = new \Respuesta();
+
+            if($this->conexion->getCantidadRegistros() > 0)
+            {
+                $encabezado = [
+                    'fecha',
+                    'nombres_cliente',
+                    'apellidos_cliente',
+                    'razon_social_cliente',
+                    'notas',
+                    'precio_total',
+                    'total_iva'
+                ];
+
+                $nombre_archivo = 'informes/' . $dirName = date( 'YmdHis', time()) . '.xls';
+                $archivo = \fopen($nombre_archivo, 'w');
+                \fputs($archivo, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                \fputcsv($archivo, $encabezado, ';');
+
+                foreach ($resultado as $cotizacion) {
+                    \fputs($archivo, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                    \fputcsv($archivo, get_object_vars($cotizacion), ';');
+                }
+
+                \fclose($archivo);
+
+                $pdf = new \stdClass();
+                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/decora_transforma/' . $nombre_archivo;
+                $respuesta->resultado = true;
+                $respuesta->datos = $pdf;
+            }
+            
+            return $respuesta;
         }
 
     }

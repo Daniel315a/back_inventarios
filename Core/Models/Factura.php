@@ -191,7 +191,7 @@
             return $this->obtenerRespuesta(null, false, true);
         }
 
-        public function consultarConFiltro($fecha_inicial, $fecha_final, $texto)
+        public function consultarCsvConFiltro($fecha_inicial, $fecha_final, $texto)
         {
             $fecha_inicial = empty($fecha_inicial) ? '2000-01-01' : $fecha_inicial;
             $fecha_final = empty($fecha_final) ? '2050-01-01' : $fecha_final;
@@ -221,10 +221,10 @@
                         LEFT JOIN usuarios
                             ON usuarios.id = facturas.usuario
                     WHERE (fecha BETWEEN '{$fecha_inicial}' AND '{$fecha_final}') AND
-                            (CONCAT(cliente.nombres, cliente.apellidos) LIKE '%{$texto}%' OR
+                            (CONCAT(cliente.nombres, ' ' ,cliente.apellidos) LIKE '%{$texto}%' OR
                             CONCAT(cliente.razon_social) LIKE '%{$texto}%' OR
-                            CONCAT(vendedor.nombres, vendedor.apellidos) LIKE '%{$texto}%')
-                    ORDER BY consecutivo ASC;";
+                            CONCAT(vendedor.nombres, ' ' ,vendedor.apellidos) LIKE '%{$texto}%')
+                    ORDER BY fecha, consecutivo ASC;";
 
             $resultado = $this->conexion->getData($sql);
             $respuesta = new \Respuesta();

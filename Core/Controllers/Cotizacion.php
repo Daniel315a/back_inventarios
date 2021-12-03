@@ -21,8 +21,7 @@
                         $respuesta = $cotizacion->consultarPorId($_GET['id']);
                     }
                 }
-
-                if($solicitud == 'consultar_por_empresa')
+                else if($solicitud == 'consultar_por_empresa')
                 {
                     $idEmpresa = 0;
 
@@ -31,6 +30,18 @@
                     }
 
                     $respuesta = $cotizacion->consultarPorEmpresa($idEmpresa);
+                }
+                else if($solicitud == 'informe_csv')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, 
+                    [
+                        'texto'
+                    ]);
+                    
+                    if($parametrosOk)
+                    {
+                        $respuesta = $cotizacion->consultarCsvConFiltro($_GET['texto']);
+                    }
                 }
             }
             
