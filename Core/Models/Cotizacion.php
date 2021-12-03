@@ -62,6 +62,7 @@
             $sql = "SELECT 
                                 cotizaciones.id, 
                                 personas.numero_documento, 
+                                cotizaciones.fecha,
                                 (CASE 
                                     WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
                                     ELSE personas.razon_social
