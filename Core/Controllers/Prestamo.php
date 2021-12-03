@@ -117,7 +117,6 @@
                         $prestamo->consultarPorId($_POST['id']);
 
                         if($prestamo->fecha_devolucion == null){
-
                             $detalle = new \Models\DetallePrestamo();
                             $detalle->eliminarPorPrestamo($_POST['id']);
 

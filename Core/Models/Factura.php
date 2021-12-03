@@ -191,6 +191,84 @@
             return $this->obtenerRespuesta(null, false, true);
         }
 
+        public function consultarConFiltro($fecha_inicial, $fecha_final, $texto)
+        {
+            $fecha_inicial = empty($fecha_inicial) ? '2000-01-01' : $fecha_inicial;
+            $fecha_final = empty($fecha_final) ? '2050-01-01' : $fecha_final;
+
+            $sql = "SELECT consecutivo,
+                            fecha,
+                            usuarios.nombre AS usuario,
+                            cliente.nombres AS nombres_cliente,
+                            cliente.apellidos AS apellidos_cliente,
+                            cliente.razon_social AS razon_social_cliente,
+                            vendedor.nombres AS nombres_vendedor,
+                            vendedor.apellidos AS apellidos_vendedor,
+                            valor_total,
+                            porcentaje_comision,
+                            valor_comision,
+                            total_descuento,
+                            total_iva,
+                            CASE 
+                                WHEN anulada IS TRUE THEN 'SÍ'
+                                ELSE 'NO'
+                            END AS anulada
+                    FROM facturas
+                        LEFT JOIN personas AS cliente
+                            ON cliente.id = facturas.cliente
+                        LEFT JOIN personas AS vendedor
+                            ON vendedor.id = facturas.vendedor
+                        LEFT JOIN usuarios
+                            ON usuarios.id = facturas.usuario
+                    WHERE (fecha BETWEEN '{$fecha_inicial}' AND '{$fecha_final}') AND
+                            (CONCAT(cliente.nombres, cliente.apellidos) LIKE '%{$texto}%' OR
+                            CONCAT(cliente.razon_social) LIKE '%{$texto}%' OR
+                            CONCAT(vendedor.nombres, vendedor.apellidos) LIKE '%{$texto}%')
+                    ORDER BY consecutivo ASC;";
+
+            $resultado = $this->conexion->getData($sql);
+            $respuesta = new \Respuesta();
+
+            if($this->conexion->getCantidadRegistros() > 0)
+            {
+                $encabezado = [
+                    'consecutivo',
+                    'fecha',
+                    'usuario',
+                    'nombres_cliente',
+                    'apellidos_cliente',
+                    'razon_social_cliente',
+                    'nombres_vendedor',
+                    'apellidos_vendedor',
+                    'valor_total',
+                    'porcentaje_comision',
+                    'valor_comision',
+                    'total_descuento',
+                    'total_iva',
+                    'anulada'
+                ];
+
+                $nombre_archivo = 'informes/' . $dirName = date( 'YmdHis', time()) . '.xls';
+                $archivo = \fopen($nombre_archivo, 'w');
+                \fputs($archivo, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                \fputcsv($archivo, $encabezado, ';');
+
+                foreach ($resultado as $factura) {
+                    \fputs($archivo, chr(0xEF) . chr(0xBB) . chr(0xBF));
+                    \fputcsv($archivo, get_object_vars($factura), ';');
+                }
+
+                \fclose($archivo);
+
+                $pdf = new \stdClass();
+                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/decora_transforma/' . $nombre_archivo;
+                $respuesta->resultado = true;
+                $respuesta->datos = $pdf;
+            }
+
+            return $respuesta;
+        }
+
     }
     
 ?>

@@ -31,6 +31,20 @@
                 {
                     $respuesta = $factura->consultarListado();
                 }
+                else if($solicitud == 'informe_csv')
+                {
+                    $parametrosOk = \variablesEnArreglo($_GET, 
+                    [
+                        'fecha_inicial', 
+                        'fecha_final', 
+                        'texto'
+                    ]);
+                    
+                    if($parametrosOk)
+                    {
+                        $respuesta = $factura->consultarConFiltro($_GET['fecha_inicial'], $_GET['fecha_final'], $_GET['texto']);
+                    }
+                }
             }
 
             \responder($respuesta, $parametrosOk);

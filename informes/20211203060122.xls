@@ -1,0 +1,2 @@
+﻿consecutivo;fecha;usuario;nombres_cliente;apellidos_cliente;razon_social_cliente;nombres_vendedor;apellidos_vendedor;valor_total;porcentaje_comision;valor_comision;total_descuento;total_iva;anulada
+﻿8;2021-12-03;Administrador;"Laura Marcela";"López Velásquez";;"Verónica María";"Morales Hernández";134200.00;10.00;12200.00;0.00;12200.00;NO
