@@ -5,3 +5,4 @@ DB/*.bak
 *.code-workspace
 /DB/*.bak
 /Core/config_conexion.php
+/informes
