@@ -125,7 +125,6 @@
                         if(isset($_POST['nombres'])){
                             $persona->nombres = $_POST['nombres'];
                         }
-    
 
                         if(isset($_POST['apellidos'])){
                             $persona->apellidos = $_POST['apellidos'];
@@ -147,6 +146,11 @@
                             $persona->email = $_POST['email'];
                         }
     
+                        if(isset($_POST['municipio']))
+                        {
+                            $persona->municipio = new \Models\Municipio($_POST['municipio']);
+                        }
+
                         if(isset($_POST['habilitada'])){
                             $persona->habilitada = $_POST['habilitada'];
                         }

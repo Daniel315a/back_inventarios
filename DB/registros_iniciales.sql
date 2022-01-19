@@ -24,4 +24,5 @@ VALUES
 
 INSERT INTO tipos_documento (nombre)
 VALUES
-('Cédula de ciudadanía');
+('Cédula de ciudadanía')
+('NIT');

@@ -136,7 +136,7 @@
             $this->consecutivo = $this->consultarConsecutivo()->datos->consecutivo;
             $this->anulada = false;
 
-            $sql = "INSERT INTO decora_transforma.facturas
+            $sql = "INSERT INTO facturas
             (
                 consecutivo,
                 fecha,
