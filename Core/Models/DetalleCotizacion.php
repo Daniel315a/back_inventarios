@@ -89,7 +89,7 @@
                     VALUES
                     (
                         {$this->cotizacion},
-                        {$this->producto},
+                        {$this->producto->id},
                         {$this->cantidad},
                         '{$this->descripcion}',
                         {$this->precio_unitario},
@@ -97,7 +97,7 @@
                         {$this->valor_iva},
                         {$this->precio_total}
                     )";
-
+            
             $this->conexion->execCommand($sql);
 
             return $this->obtenerRespuesta($this, true, false);

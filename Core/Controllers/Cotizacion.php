@@ -62,7 +62,8 @@
                         'fecha',
                         'cliente', 
                         'notas', 
-                        'precio_total'
+                        'precio_total',
+                        'detalles'
                     ]);
                     
                     if($parametrosOk === true){
