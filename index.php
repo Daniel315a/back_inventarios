@@ -1,5 +1,7 @@
 <?php
 
+	echo 'Hello Wilcar'; exit();
+
 	/**
 	 * Constante que determina si se está 
 	 * ejecutando en depuración o producción
