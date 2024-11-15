@@ -96,7 +96,7 @@
 
         public function consultarPorEmpresa($empresa)
         {
-            $sql = "SELECT * FROM personas WHERE empresa = {$empresa} AND habilitada = 1;";
+            $sql = "SELECT * FROM personas WHERE empresa = {$empresa} AND habilitada = 1 LIMIT 100;";
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
