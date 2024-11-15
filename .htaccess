@@ -18,7 +18,7 @@ RewriteRule ^ index.php [QSA,L]
 # Bloquea el acceso directo al archivo composer.json
 <Files composer.json>
 	Order allow,deny
-	Deny from all
+	Deny from all		
 </Files>
 
 # Bloquea el acceso directo al archivo composer.lock

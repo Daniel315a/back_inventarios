@@ -64,7 +64,10 @@
 
             if($conexion->getCantidadRegistros() > 0)
             {
-                $listaDetalles = $datos;
+                foreach ($datos as $detalle) {
+                    $detalle->producto = new \Models\Producto($detalle->producto);
+                    array_push($listaDetalles, $detalle);
+                }
             }
 
             return $listaDetalles;
@@ -97,7 +100,7 @@
                         {$this->valor_iva},
                         {$this->precio_total}
                     )";
-            
+
             $this->conexion->execCommand($sql);
 
             return $this->obtenerRespuesta($this, true, false);

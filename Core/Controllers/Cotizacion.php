@@ -21,6 +21,10 @@
                         $respuesta = $cotizacion->consultarPorId($_GET['id']);
                     }
                 }
+                else if($solicitud == 'consultar_por_usuario')
+                {
+                    $respuesta = $cotizacion->consultarPorUsuario();
+                }
                 else if($solicitud == 'consultar_por_empresa')
                 {
                     $idEmpresa = 0;
@@ -67,6 +71,7 @@
                     ]);
                     
                     if($parametrosOk === true){
+                        $cotizacion->usuario = $GLOBALS['usuario'];
                         $cotizacion->fecha = $_POST['fecha'];
                         $cotizacion->cliente = new \Models\Persona($_POST['cliente']);
                         $cotizacion->notas = $_POST['notas'];
@@ -88,7 +93,7 @@
                                     $detalleNuevo->cantidad = $detalle->cantidad;
                                     $detalleNuevo->descripcion = $detalle->descripcion;
                                     $detalleNuevo->precio_unitario = $detalle->precio_unitario;
-                                    $detalleNuevo->porcentaje_iva = $detalle->porcentaje_iva;
+                                    $detalleNuevo->porcentaje_iva = $detalle->porcentaje_iva ? $detalle->porcentaje_iva : 0;
                                     $detalleNuevo->valor_iva = $detalle->valor_iva;
                                     $detalleNuevo->precio_total = $detalle->precio_total;
 
@@ -115,11 +120,38 @@
                             $cotizacion->notas = $_POST["notas"];
                         }
 
+                        if(isset($_POST['total_iva'])){
+                            $cotizacion->precio_total = $_POST["total_iva"];
+                        }
+
                         if(isset($_POST['precio_total'])){
                             $cotizacion->precio_total = $_POST["precio_total"];
                         }
 
                         $respuesta = $cotizacion->actualizar();
+
+                        if($respuesta->resultado){
+                            if(isset($_POST['detalles'])){
+                                $cotizacion->detalles = array();
+                                $detalles = \json_decode($_POST['detalles']);
+
+                                foreach ($detalles as $i => $detalle) {
+                                    $detalleNuevo = new \Models\DetalleCotizacion();
+                                    /* No se crean los objetos porque no retorna el json correctamente. */
+                                    $detalleNuevo->cotizacion = $cotizacion->id;
+                                    $detalleNuevo->producto = $detalle->producto;
+                                    $detalleNuevo->cantidad = $detalle->cantidad;
+                                    $detalleNuevo->descripcion = $detalle->descripcion;
+                                    $detalleNuevo->precio_unitario = $detalle->precio_unitario;
+                                    $detalleNuevo->porcentaje_iva = $detalle->porcentaje_iva ? $detalle->porcentaje_iva : 0;
+                                    $detalleNuevo->valor_iva = $detalle->valor_iva;
+                                    $detalleNuevo->precio_total = $detalle->precio_total;
+
+                                    $detalleNuevo->crear();
+                                    array_push($cotizacion->detalles, $detalleNuevo);
+                                }
+                            }
+                        }
 
                     }
                 }

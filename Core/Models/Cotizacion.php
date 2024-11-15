@@ -5,6 +5,7 @@
     
         public $id;
         public $fecha;
+        public $usuario;
         public $cliente;
         public $notas;
         public $detalles;
@@ -26,7 +27,9 @@
         public function consultarPorId($id)
         {
             $this->id = $id;
-            $sql = "SELECT * FROM cotizaciones WHERE id = {$this->id};";
+            $sql = "SELECT *
+                    FROM cotizaciones
+                    WHERE id = {$this->id};";
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
@@ -35,6 +38,7 @@
             if($conexion->getCantidadRegistros() > 0)
             {
                 $this->cliente = new \Models\Persona($datos[0]->cliente);
+                $this->usuario = new Usuario($datos[0]->usuario);
                 $this->fecha = $datos[0]->fecha;
                 $this->notas = $datos[0]->notas;
                 $this->precio_total = $datos[0]->precio_total;
@@ -44,6 +48,43 @@
                 $respuesta = new \Respuesta([
                     'resultado' => true,
                     'datos' => $this
+                ]);
+            }
+
+            return $respuesta;
+        }
+
+        public function consultarPorUsuario()
+        {
+            $usuario = 0;
+            
+            if(isset($GLOBALS['usuario'])){
+                $usuario = $GLOBALS['usuario']->id;
+            }
+
+            $sql = "SELECT 
+                                cotizaciones.id, 
+                                personas.numero_documento, 
+                                cotizaciones.fecha,
+                                (CASE 
+                                    WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
+                                    ELSE personas.razon_social
+                                END) AS nombre
+                    FROM cotizaciones 
+                        LEFT JOIN personas
+                            ON personas.id = cotizaciones.cliente
+                    WHERE usuario = {$usuario};";
+            
+
+            $conexion = new \Conexion();
+            $datos = $conexion->getData($sql);
+            $respuesta = \Respuesta::obtenerDefault();
+
+            if($conexion->getCantidadRegistros() > 0)
+            {
+                $respuesta = new \Respuesta([
+                    'resultado' => true,
+                    'datos' => $datos
                 ]);
             }
 
@@ -94,6 +135,7 @@
 
             $sql = "INSERT INTO cotizaciones
                     (
+                        usuario,
                         fecha,
                         cliente,
                         notas,
@@ -102,6 +144,7 @@
                     )
                     VALUES
                     (
+                        {$this->usuario->id},
                         '{$this->fecha}',
                         {$this->cliente->id},
                         '{$this->notas}',
@@ -183,7 +226,7 @@
                 \fclose($archivo);
 
                 $pdf = new \stdClass();
-                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/decora_transforma/' . $nombre_archivo;
+                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $nombre_archivo;
                 $respuesta->resultado = true;
                 $respuesta->datos = $pdf;
             }

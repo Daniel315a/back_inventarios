@@ -51,10 +51,12 @@
 		 */
 		private function initConexion()
 		{
-			$this->conexion = new \mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+			$this->conexion = new \mysqli(DBHOST, DBUSER, DBPASS, DBNAME, DBPORT);
+			if ($this->conexion->connect_error) {
+				throw new \Exception("Error al conectar a la base de datos: " . $this->conexion->connect_error);
+			}
 			$this->conexion->set_charset("utf8");
 		}
-
 		public function getData($sql)
 		{
 			$this->initConexion();

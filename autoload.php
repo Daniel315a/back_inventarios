@@ -16,13 +16,12 @@
 	/**
  	 * Se establece el manejador de errores
 	 */
-	error_reporting(0);
-	set_error_handler('errorHandler');
-	register_shutdown_function('fatalErrorHandler');
+	// error_reporting(0);
+	// set_error_handler('errorHandler');
+	// register_shutdown_function('fatalErrorHandler');
 
 	spl_autoload_register(function($clase)
 	{
-
 		/*
 		 * Esta variable define el namespace de la llamada
 		 */

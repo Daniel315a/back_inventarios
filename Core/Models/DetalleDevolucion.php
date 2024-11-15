@@ -16,7 +16,7 @@
 
         public function crear($remision)
         {
-            $sql = "INSERT INTO decora_transforma.detalles_devolucion
+            $sql = "INSERT INTO detalles_devolucion
                     (
                         producto,
                         remision,

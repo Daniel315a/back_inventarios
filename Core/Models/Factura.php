@@ -16,6 +16,7 @@
         public $total_iva;
         public $detalles;
         public $anulada;
+        public $remisiones;
 
         function __construct()
         {
@@ -57,6 +58,13 @@
                 $this->total_descuento = $datos[0]->total_descuento;
                 $this->total_iva = $datos[0]->total_iva;
                 $this->anulada = $datos[0]->anulada;
+                
+                $respuesta_remisiones = Remision::consultarPorFactura($this->id);
+                $this->remisiones = array();
+
+                if($respuesta_remisiones->resultado) {
+                    $this->remisiones = $respuesta_remisiones->datos;
+                }
                 
                 $respuesta_detalles = DetalleFactura::consultarDeFactura($this->id);
                 
@@ -261,7 +269,7 @@
                 \fclose($archivo);
 
                 $pdf = new \stdClass();
-                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/decora_transforma/' . $nombre_archivo;
+                $pdf->ruta = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $nombre_archivo;
                 $respuesta->resultado = true;
                 $respuesta->datos = $pdf;
             }

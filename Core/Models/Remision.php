@@ -6,7 +6,6 @@
         public $id;
         public $factura;
         public $encargado;
-        public $estado;
         public $nombre_archivo_soporte;
         public $notas;
         public $fecha_entrega;
@@ -37,7 +36,6 @@
             (
                 factura,
                 encargado,
-                estado,
                 notas,
                 fecha_entrega,
                 fecha_instalacion
@@ -46,7 +44,6 @@
             (
                 {$this->factura->id},
                 {$this->encargado->id},
-                0,
                 '{$this->notas}',
                 '{$this->fecha_entrega}',
                 '{$this->fecha_instalacion}'
@@ -71,7 +68,6 @@
                 $this->id = $datos[0]->id;
                 $this->factura = new Factura($datos[0]->factura);
                 $this->encargado = new Persona($datos[0]->encargado);
-                $this->estado = $datos[0]->estado;
                 $this->nombre_archivo_soporte = $datos[0]->nombre_archivo_soporte;
                 $this->notas = $datos[0]->notas;
                 $this->fecha_entrega = $datos[0]->fecha_entrega;
@@ -93,36 +89,24 @@
             return $respuesta;
         }
 
-        public function consultarListado()
+        public static function consultarPorFactura($id_factura)
         {
-            $sql = "SELECT 
-                        remisiones.id,
-                        personas.numero_documento,
-                        CASE
-                            WHEN personas.razon_social IS NULL OR personas.razon_social = '' THEN CONCAT(personas.nombres, ' ', personas.apellidos)
-                            ELSE personas.razon_social
-                        END AS nombre_cliente,
-                        encargado.numero_documento AS numero_documento_encargado,
-                        CASE
-                            WHEN encargado.razon_social IS NULL OR encargado.razon_social = '' THEN CONCAT(encargado.nombres, ' ', encargado.apellidos)
-                            ELSE encargado.razon_social
-                        END AS nombre_encargado,
-                        fecha_entrega,
-                        fecha_instalacion
-                    FROM remisiones
-                        LEFT JOIN facturas
-                            ON factura = facturas.id
-                        LEFT JOIN personas
-                            ON facturas.cliente = personas.id
-                        LEFT JOIN personas AS encargado
-                            ON encargado.id = remisiones.encargado
-                    WHERE personas.empresa = {$GLOBALS['usuario']->empresa->id};";
+            $conexion = new \Conexion();
 
-            $datos = $this->conexion->getData($sql);
+            $sql = "SELECT *
+                    FROM remisiones
+                    WHERE factura = {$id_factura};";
+
+            $datos = $conexion->getData($sql);
             $respuesta = \Respuesta::obtenerDefault();
 
-            if($this->conexion->getCantidadRegistros() > 0)
+            if($conexion->getCantidadRegistros() > 0)
             {
+                foreach ($datos as $remision) {
+                    $remision->encargado = new Persona($remision->encargado);
+                    unset($remision->factura);
+                }
+
                 $respuesta = new \Respuesta([
                     'resultado' => true,
                     'datos' => $datos
@@ -137,7 +121,6 @@
             $sql = "UPDATE remisiones
                     SET
                         encargado = {$this->encargado->id},
-                        estado = {$this->estado},
                         nombre_archivo_soporte = '{$this->nombre_archivo_soporte}',
                         notas = '{$this->notas}',
                         fecha_entrega = '{$this->fecha_entrega}',

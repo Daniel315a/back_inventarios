@@ -178,11 +178,24 @@
 
         public function consultarPorTipoEmpleado($empresa)
         {
-            $sql = "SELECT * 
-            FROM personas 
-            LEFT JOIN tipos_persona
-                ON personas.tipo = tipos_persona.id
-            WHERE  empresa = {$empresa} AND habilitada = 1 AND es_empleado = 1;";
+            $sql = "SELECT
+                        personas.id,
+                        personas.municipio,
+                        personas.tipo,
+                        personas.empresa,
+                        personas.tipo_documento,
+                        personas.numero_documento,
+                        personas.nombres,
+                        personas.apellidos,
+                        personas.razon_social,
+                        personas.direccion,
+                        personas.telefono,
+                        personas.email,
+                        personas.habilitada
+                    FROM personas 
+                    LEFT JOIN tipos_persona
+                        ON personas.tipo = tipos_persona.id
+                    WHERE  empresa = {$empresa} AND habilitada = 1 AND es_empleado = 1;";
 
             $conexion = new \Conexion();
             $datos = $conexion->getData($sql);
@@ -200,7 +213,7 @@
                     $persona->tipo = new \Models\TipoPersona($datos[$i]->tipo);
                     $persona->empresa = new \Models\Empresa($datos[$i]->empresa);
                     $persona->tipo_documento = new \Models\TipoDocumento($datos[$i]->tipo_documento);
-                    $persona->numero_documento = $datos[0]->numero_documento;
+                    $persona->numero_documento = $datos[$i]->numero_documento;
                     $persona->nombres = $datos[$i]->nombres;
                     $persona->apellidos = $datos[$i]->apellidos;
                     $persona->razon_social = $datos[$i]->razon_social;

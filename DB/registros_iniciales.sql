@@ -1,5 +1,5 @@
 INSERT INTO empresas (nombre)
-VALUES ('Decora y transforma');
+VALUES ('Empresa 1');
 
 INSERT INTO tipos_usuario (nombre)
 VALUES ('Administrador');
@@ -12,7 +12,7 @@ VALUES
     -- a
     '0cc175b9c0f1b6a831c399e269772661',
     '05b752f8270b4de3a5de314fe6ba0663',
-    (SELECT id FROM empresas WHERE nombre = 'Decora y transforma')
+    (SELECT id FROM empresas WHERE nombre = 'Empresa 1')
 );
 
 INSERT INTO tipos_persona (id, nombre, es_empleado)

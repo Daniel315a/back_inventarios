@@ -78,6 +78,9 @@
                     VALUES";
 
             for ($i=0; $i < \count($detalles); $i++) { 
+                $detalles[$i]->porcentaje_descuento = $detalles[$i]->porcentaje_descuento ? $detalles[$i]->porcentaje_descuento : 0;
+                $detalles[$i]->porcentaje_iva = $detalles[$i]->porcentaje_iva ? $detalles[$i]->porcentaje_iva : 0;
+
                 $sql .= "(
                             {$detalles[$i]->producto->id},
                             {$id_factura},
